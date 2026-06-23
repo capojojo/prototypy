@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZORA · Manažér prevádzky — Natália (ukážka)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#F5F0E8; --paper:#FFFFFF; --ink:#1F1B16; --grey:#4D463E; --mut:#857D74;
+    --hair:#E4DDCF; --divider:#DAD4CB; --accent:#E8431A; --accent-soft:#FAE5DD;
+    --ok:#3E7C5A; --ok-soft:#E2EFE7; --warn:#9A6A00; --warn-soft:#FDF0D5;
+  }
+  *{box-sizing:border-box;}
+  button, .rh, .pill, .qty button, .hd-back, .send, .act-btn{cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:rgba(232,67,26,0.15); -webkit-user-select:none; user-select:none;}
+  button{-webkit-appearance:none; appearance:none;}
+  html,body{margin:0; padding:0; background:var(--bg); overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); max-width:440px; margin:0 auto; min-height:100vh; position:relative;}
+  .scr{display:none; flex-direction:column; min-height:100vh; padding-bottom:96px;}
+  .scr.on{display:flex;}
+
+  /* HLAVIČKA */
+  .hd{display:flex; align-items:center; gap:12px; padding:18px 16px 14px; background:var(--bg); position:sticky; top:0; z-index:10; border-bottom:1px solid var(--divider);}
+  .hd .ic{width:44px; height:44px; border-radius:12px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; flex:none;}
+  .hd-back{width:44px; height:44px; border-radius:12px; background:#EFE9DD; border:none; color:var(--ink); font-size:22px; display:flex; align-items:center; justify-content:center; flex:none;}
+  .hd-t{font-size:17px; font-weight:600; line-height:1.2;}
+  .hd-s{font-size:12px; color:var(--mut); margin-top:1px;}
+
+  .body{padding:14px 16px 0;}
+
+  /* ÚVODNÝ PRÚŽOK */
+  .hello{background:var(--accent-soft); border-radius:14px; padding:14px 16px; margin-bottom:14px;}
+  .hello b{color:var(--accent);}
+  .hello p{margin:6px 0 0; font-size:13px; color:var(--grey); line-height:1.5;}
+
+  /* DLAŽDICE (home) */
+  .rh{display:flex; align-items:center; gap:13px; background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px; width:100%; text-align:left;}
+  .rh:active{transform:scale(.99);}
+  .rh.dark{background:var(--ink); border-color:var(--ink);}
+  .rh.dark .rh-t{color:#fff;} .rh.dark .rh-s{color:#C9C2B6;} .rh.dark .ti{color:#fff;}
+  .rh .ti{font-size:24px; color:var(--accent); flex:none; width:26px; text-align:center;}
+  .rh-tx{flex:1; min-width:0;}
+  .rh-t{font-size:15px; font-weight:600;}
+  .rh-s{font-size:12px; color:var(--mut); margin-top:2px;}
+  .rh-badge{flex:none; font-size:12px; font-weight:600; color:#fff; background:var(--accent); border-radius:20px; padding:3px 10px;}
+  .rh .chev{color:var(--mut); font-size:20px; flex:none;}
+
+  /* SKUPINOVÉ MENU */
+  .grp{display:flex; align-items:center; gap:13px; background:var(--ink); border:1px solid var(--ink); border-radius:12px; padding:15px 14px; margin-bottom:8px; width:100%; text-align:left;}
+  .grp:active{transform:scale(.99);}
+  .grp .ti{font-size:24px; color:#fff; flex:none; width:26px; text-align:center;}
+  .grp .rh-t{color:#fff; font-size:16px;}
+  .grp .rh-s{color:#C9C2B6;}
+  .grp .grp-chev{color:#C9C2B6; font-size:22px; transition:transform .2s;}
+  .grp.open .grp-chev{transform:rotate(180deg);}
+  .grp-body{display:none; padding:2px 0 6px 0; margin-bottom:8px;}
+  .grp-body.open{display:block;}
+  .sub{display:flex; align-items:center; gap:12px; background:var(--paper); border:1px solid var(--hair); border-radius:11px; padding:13px 14px; margin:0 0 7px 14px; width:calc(100% - 14px); text-align:left;}
+  .sub:active{transform:scale(.99);}
+  .sub .ti{font-size:21px; color:var(--accent); flex:none; width:24px; text-align:center;}
+  .sub .rh-t{font-size:14px; font-weight:600;}
+  .sub .rh-s{font-size:11px; color:var(--mut); margin-top:1px;}
+  .sub .chev{color:var(--mut); font-size:18px; flex:none;}
+
+  /* KARTY V SEKCII */
+  .card{background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px;}
+  .card-row{display:flex; align-items:center; gap:10px;}
+  .card-nazov{flex:1; font-size:15px; font-weight:600; min-width:0;}
+  .card-sub{font-size:12px; color:var(--mut); margin-top:2px;}
+  .qty{display:flex; align-items:center; gap:8px; flex:none;}
+  .qty b{font-size:18px; min-width:30px; text-align:center;}
+  .qty button{width:38px; height:38px; border-radius:9px; border:none; font-size:20px; display:flex; align-items:center; justify-content:center;}
+  .qty .m{background:#EFE9DD; color:var(--ink);}
+  .qty .p{background:var(--accent); color:#fff;}
+
+  /* STAV ŠTÍTKY */
+  .tag{display:inline-block; font-size:11px; font-weight:700; border-radius:7px; padding:3px 9px; flex:none; text-transform:uppercase; letter-spacing:.03em;}
+  .tag-ok{background:var(--ok-soft); color:var(--ok);}
+  .tag-zmena{background:var(--accent-soft); color:var(--accent);}
+  .tag-sab{background:#EFE9DD; color:var(--mut);}
+  .tag-caka{background:var(--warn-soft); color:var(--warn);}
+  .tag-zam{background:#FBE4E2; color:#C0392B;}
+
+  .mesto-lbl{font-size:12px; font-weight:700; color:var(--mut); text-transform:uppercase; letter-spacing:.05em; margin:16px 0 8px;}
+  .sec-lbl{font-size:12px; font-weight:600; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px;}
+  .info{font-size:12px; color:var(--grey); background:#EFE9DD; border-radius:10px; padding:10px 12px; margin-bottom:12px; line-height:1.5;}
+  .info i.ti{color:var(--accent);}
+
+  /* RIADOK PREHĽADU (objednávky) */
+  .prow{display:flex; align-items:center; gap:10px; background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:13px 14px; margin-bottom:8px;}
+  .prow-tx{flex:1; min-width:0;}
+  .prow-naz{font-size:15px; font-weight:600;}
+  .prow-sub{font-size:12px; color:var(--mut); margin-top:2px;}
+  .prow-act{flex:none; font-size:14px; font-weight:600; color:var(--accent);}
+
+  /* AKČNÉ TLAČIDLÁ */
+  .act-row{display:flex; gap:8px; margin-top:12px;}
+  .act-btn{flex:1; min-height:46px; border-radius:11px; font-size:14px; font-weight:600; border:1px solid var(--hair); display:flex; align-items:center; justify-content:center; gap:7px;}
+  .act-btn.primary{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .act-btn.danger{background:transparent; color:#C0392B; border-color:#E3B5B0;}
+  .act-btn.accent{background:var(--accent); color:#fff; border-color:var(--accent);}
+
+  /* FORMULÁROVÉ PRVKY */
+  .fld{margin:14px 0 0;}
+  .fld label{display:block; font-size:13px; font-weight:600; color:var(--grey); margin-bottom:6px;}
+  .fld select, .fld input{width:100%; min-height:48px; padding:0 12px; font-size:15px; border:1px solid var(--hair); border-radius:11px; background:var(--paper); color:var(--ink); font-family:inherit;}
+
+  /* POZNÁMKA */
+  .pozn{background:#FFF; border:1.5px dashed var(--accent); border-radius:12px; padding:14px; margin:16px 0 4px;}
+  .pozn-t{font-size:13px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
+  .pozn textarea{width:100%; border:1px solid var(--hair); border-radius:10px; padding:10px; font-size:14px; font-family:inherit; min-height:70px; resize:vertical; box-sizing:border-box; color:var(--ink);}
+  .pozn .hint{font-size:11px; color:var(--mut); margin-top:6px;}
+  .pozn.filled{border-color:var(--ok);}
+  .pozn.filled .pozn-t{color:var(--ok);}
+
+  /* SPODNÁ LIŠTA */
+  .foot{position:fixed; bottom:0; left:0; right:0; max-width:440px; margin:0 auto; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:var(--bg); border-top:1px solid var(--divider);}
+  .send{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:9px;}
+  .send .n{background:#fff; color:var(--accent); border-radius:20px; font-size:12px; padding:1px 8px; font-weight:700;}
+  .foot-hint{text-align:center; font-size:11px; color:var(--mut); margin-top:7px;}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div class="scr on" id="s-home">
+  <div class="hd">
+    <div class="ic"><i class="ti ti-clipboard-check"></i></div>
+    <div><div class="hd-t">Manažér prevádzky · Natália</div><div class="hd-s">Návrh pracovnej obrazovky</div></div>
+  </div>
+  <div class="body">
+    <div class="hello">
+      <b>Návrh pracovnej obrazovky</b>
+      <p>Toto je návrh manažérskej obrazovky v systéme ZORA. Prosím prejdite si jednotlivé časti a vyskúšajte ich. Pri každej je pole <b>„Pripomienka k tejto časti"</b> — čo chýba, čo by uľahčilo prácu, čo zmeniť. Na konci sa pripomienky odošlú jedným ťuknutím. Uvedené čísla a mená sú ilustračné.</p>
+    </div>
+
+    <!-- SKUPINA 1: OBJEDNÁVKY -->
+    <button class="grp" data-grp="g-obj">
+      <i class="ti ti-clipboard-list"></i>
+      <div class="rh-tx"><div class="rh-t">Objednávky</div><div class="rh-s">Prehľad, úpravy, korekcie, káva</div></div>
+      <i class="ti ti-chevron-down chev grp-chev"></i>
+    </button>
+    <div class="grp-body" id="g-obj">
+      <button class="sub" data-go="prehlad"><i class="ti ti-chart-bar"></i><div class="rh-tx"><div class="rh-t">Prehľad objednávok</div><div class="rh-s">Všetky predajne · pečivo</div></div><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="upravit"><i class="ti ti-building-store"></i><div class="rh-tx"><div class="rh-t">Objednávky — upraviť</div><div class="rh-s">Schváliť a meniť za predajne</div></div><span class="rh-badge">6</span><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="lahodky"><i class="ti ti-salad"></i><div class="rh-tx"><div class="rh-t">Prehľad lahôdok</div><div class="rh-s">Šaláty, cestoviny</div></div><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="korekcie"><i class="ti ti-adjustments"></i><div class="rh-tx"><div class="rh-t">Korekcie</div><div class="rh-s">Prerozdelenie pri nedostatku</div></div><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="kava"><i class="ti ti-coffee"></i><div class="rh-tx"><div class="rh-t">Objednať kávu</div><div class="rh-s">Zo Spojky · za predajňu</div></div><i class="ti ti-chevron-right chev"></i></button>
+    </div>
+
+    <!-- SKUPINA 2: SKLAD A TOVAR -->
+    <button class="grp" data-grp="g-sklad">
+      <i class="ti ti-box-seam"></i>
+      <div class="rh-tx"><div class="rh-t">Sklad a tovar</div><div class="rh-s">Presuny, ceny, príjem, rozvoz</div></div>
+      <i class="ti ti-chevron-down chev grp-chev"></i>
+    </button>
+    <div class="grp-body" id="g-sklad">
+      <button class="sub" data-go="presun"><i class="ti ti-arrows-exchange"></i><div class="rh-tx"><div class="rh-t">Presun medzi predajňami</div><div class="rh-s">Presunúť tovar z jednej na druhú</div></div><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="navrhy"><i class="ti ti-file-pencil"></i><div class="rh-tx"><div class="rh-t">Návrhy zmien (ceny/produkty)</div><div class="rh-s">Schvaľuje admin</div></div><span class="rh-badge">1</span><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="prijem"><i class="ti ti-clipboard-check"></i><div class="rh-tx"><div class="rh-t">Príjem (náhľad)</div><div class="rh-s">Čo predajne prijali</div></div><i class="ti ti-chevron-right chev"></i></button>
+      <button class="sub" data-go="rozvoz"><i class="ti ti-truck"></i><div class="rh-tx"><div class="rh-t">Rozvoz (náhľad)</div><div class="rh-s">Trasa šoféra</div></div><i class="ti ti-chevron-right chev"></i></button>
+    </div>
+
+    <!-- SKUPINA 3: ĽUDIA A ÚLOHY -->
+    <button class="grp" data-grp="g-ludia">
+      <i class="ti ti-users"></i>
+      <div class="rh-tx"><div class="rh-t">Ľudia a úlohy</div><div class="rh-s">Prideliť úlohy kolegom</div></div>
+      <span class="rh-badge">2</span><i class="ti ti-chevron-down chev grp-chev"></i>
+    </button>
+    <div class="grp-body" id="g-ludia">
+      <button class="sub" data-go="ulohy"><i class="ti ti-checklist"></i><div class="rh-tx"><div class="rh-t">Úlohy</div><div class="rh-s">Prideliť šoférovi a kolegom</div></div><span class="rh-badge">2</span><i class="ti ti-chevron-right chev"></i></button>
+    </div>
+
+    <button class="rh" data-go="extra" style="margin-top:14px">
+      <i class="ti ti-message-plus"></i>
+      <div class="rh-tx"><div class="rh-t">Pripomienky a návrhy</div><div class="rh-s">Čokoľvek, čo sa nezmestilo inde</div></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </button>
+  </div>
+</div>
+
+<!-- ============ PREHĽAD OBJEDNÁVOK ============ -->
+<div class="scr" id="s-prehlad">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Prehľad objednávok</div><div class="hd-s">Streda · všetky predajne</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Prehľad objednávok pečiva za všetky predajne naraz. Len na pozeranie — úpravy sú v časti „Objednávky — upraviť".</div>
+    <div class="mesto-lbl">Prešov</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">120 ks</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">85 ks</div></div><span class="tag tag-zmena">Zmena</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Záhradné sady</div><div class="prow-sub">60 ks</div></div><span class="tag tag-sab">Šablóna</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">OC Max</div><div class="prow-sub">95 ks</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="mesto-lbl">Košice</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Masarykova</div><div class="prow-sub">70 ks</div></div><span class="tag tag-sab">Šablóna</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Kuzmányho</div><div class="prow-sub">55 ks</div></div><span class="tag tag-zmena">Zmena</span></div>
+    <div class="pozn" data-k="prehlad"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť aj sumu v eurách, alebo filtrovať podľa mesta"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ OBJEDNÁVKY — UPRAVIŤ ============ -->
+<div class="scr" id="s-upravit">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednávky — upraviť</div><div class="hd-s">Schváliť a meniť za predajne</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Tu môžete upraviť objednávku ktorejkoľvek predajne — napríklad keď treba pridať či ubrať množstvo. Ťuknutím na „Upraviť" sa otvorí objednávka tej predajne.</div>
+    <div class="mesto-lbl">Prešov</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">120 ks · Odoslané</div></div><span class="prow-act" data-go="upravit-detail">Upraviť</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">85 ks · Zmena</div></div><span class="prow-act" data-go="upravit-detail">Upraviť</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">OC Max</div><div class="prow-sub">95 ks · Odoslané</div></div><span class="prow-act" data-go="upravit-detail">Upraviť</span></div>
+    <div class="mesto-lbl">Košice</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Masarykova</div><div class="prow-sub">70 ks · Šablóna</div></div><span class="prow-act" data-go="upravit-detail">Upraviť</span></div>
+    <div class="pozn" data-k="upravit"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. potrebujem upraviť aj po uzávierke, alebo pridať dôvod zmeny"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ UPRAVIŤ — DETAIL ============ -->
+<div class="scr" id="s-upravit-detail">
+  <div class="hd"><button class="hd-back" data-go="upravit">←</button><div><div class="hd-t">Galéria · objednávka</div><div class="hd-s">Streda 25.6. · pečivo</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Úprava množstiev pre predajňu Galéria. Zmeny sa po uložení premietnu do výroby.</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Chlieb kváskový</div><div class="card-sub">bochník</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>30</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Rožok</div><div class="card-sub">ks</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>40</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Bageta</div><div class="card-sub">ks</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>15</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-check"></i> Uložiť zmeny</button></div>
+    <div class="pozn" data-k="upravit-detail"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť pôvodné množstvo vedľa zmeneného"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ LAHÔDKY ============ -->
+<div class="scr" id="s-lahodky">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Prehľad lahôdok</div><div class="hd-s">Streda · všetky predajne</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Prehľad objednávok lahôdok (šaláty, cestoviny) za všetky predajne.</div>
+    <div class="mesto-lbl">Prešov</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">Šaláty 12 · cestoviny 8</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">Šaláty 6 · cestoviny 4</div></div><span class="tag tag-zmena">Zmena</span></div>
+    <div class="mesto-lbl">Košice</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Masarykova</div><div class="prow-sub">Šaláty 9 · cestoviny 5</div></div><span class="tag tag-sab">Šablóna</span></div>
+    <div class="pozn" data-k="lahodky"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. spojiť pečivo aj lahôdky do jedného prehľadu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ KOREKCIE ============ -->
+<div class="scr" id="s-korekcie">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Korekcie</div><div class="hd-s">Prerozdelenie pri nedostatku</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Keď výroba nestíha celé množstvo, tu rozhodnete koľko reálne dostane každá predajňa. Príklad: objednaných 200 chlebov, upečených 170 — rozdeľte 170.</div>
+    <div class="sec-lbl">Chlieb kváskový · upečené 170 z 200</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">17. novembra</div><div class="card-sub">objednané 50 · priorita 1</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>50</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">OC Max</div><div class="card-sub">objednané 40</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>35</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Galéria</div><div class="card-sub">objednané 30</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>25</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Masarykova</div><div class="card-sub">objednané 80</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>60</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-check"></i> Potvrdiť rozdelenie</button></div>
+    <div class="pozn" data-k="korekcie"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech systém navrhne rozdelenie podľa priority sám"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ NÁVRHY ZMIEN ============ -->
+<div class="scr" id="s-navrhy">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Návrhy zmien</div><div class="hd-s">Cena / produkt — schvaľuje admin</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Navrhnete zmenu ceny alebo nový produkt. Kým to admin neschváli, reálny cenník sa nemení.</div>
+    <div class="fld"><label>Typ návrhu</label><select><option>Zmena ceny produktu</option><option>Úprava názvu produktu</option><option>Nový produkt</option></select></div>
+    <div class="fld"><label>Produkt</label><select><option>Chlieb kváskový — 2,50 €</option><option>Croissant maslový — 1,80 €</option></select></div>
+    <div class="fld"><label>Nová cena (s DPH, €)</label><input type="number" placeholder="napr. 2,80"></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať návrh na schválenie</button></div>
+    <div class="sec-lbl">Moje návrhy</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Cena → 2,80 €</div><div class="card-sub">Chlieb kváskový · 23.6. 09:10</div></div><span class="tag tag-caka">Čaká</span></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Nový produkt</div><div class="card-sub">Makovník · 22.6. 14:00</div></div><span class="tag tag-ok">Schválené</span></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Úprava produktu</div><div class="card-sub">Croissant · 21.6. 11:30</div></div><span class="tag tag-zam">Zamietnuté</span></div></div>
+    <div class="pozn" data-k="navrhy"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť dôvod, prečo admin návrh zamietol"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ OBJEDNAŤ KÁVU ============ -->
+<div class="scr" id="s-kava">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednať kávu</div><div class="hd-s">Zo Spojky · za predajňu</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Objednáte kávu zo Spojky pre vybranú predajňu. Vyberiete balenie a množstvo — rovnako ako reštaurácie.</div>
+    <div class="fld"><label>Pre predajňu</label><select><option>17. novembra</option><option>Galéria</option><option>OC Max</option><option>Masarykova</option></select></div>
+    <div class="sec-lbl">KAVEYO espresso · tmavé</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Sáčok · 1 kg</div><div class="card-sub">22,00 €</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>3</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Sáčok malý · 200 g</div><div class="card-sub">6,50 €</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>0</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-coffee"></i> Objednať za predajňu</button></div>
+    <div class="pozn" data-k="kava"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech každá predajňa vidí svoju spotrebu kávy za mesiac"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PRESUN MEDZI PREDAJŇAMI ============ -->
+<div class="scr" id="s-presun">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Presun medzi predajňami</div><div class="hd-s">Presunúť tovar z jednej na druhú</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Keď je niekde tovaru veľa a inde málo, presuňte ho. Odpíše sa zo zdrojovej predajne a pripíše na cieľovú — bez odpisu.</div>
+    <div class="fld"><label>Z predajne</label><select><option>17. novembra</option><option>OC Max</option><option>Galéria</option></select></div>
+    <div class="fld"><label>Do predajne</label><select><option>Galéria</option><option>Masarykova</option><option>Kuzmányho</option></select></div>
+    <div class="sec-lbl">Čo presunúť</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Chlieb kváskový</div><div class="card-sub">na sklade: 18</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>6</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Rožok</div><div class="card-sub">na sklade: 35</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>10</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Croissant</div><div class="card-sub">na sklade: 12</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>0</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-arrows-exchange"></i> Presunúť</button></div>
+    <div class="pozn" data-k="presun"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech sa dá presúvať aj večer pri zatváraní, alebo aj lahôdky"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ ÚLOHY ============ -->
+<div class="scr" id="s-ulohy">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Úlohy</div><div class="hd-s">Prideliť šoférovi a kolegom</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Pridelíte úlohu komukoľvek — šoférovi, pekárovi, inej predajni. Dotyčný ju uvidí u seba a odškrtne keď je hotová.</div>
+    <div class="fld"><label>Komu</label><select><option>Patrik — šofér</option><option>Matej — pekáreň</option><option>Valér — lahôdky</option><option>Galéria — predajňa</option></select></div>
+    <div class="fld"><label>Úloha</label><input type="text" placeholder="napr. odviezť 6 chlebov z 17. novembra do Galérie"></div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-send"></i> Prideliť úlohu</button></div>
+    <div class="sec-lbl">Zadané úlohy</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Patrik — šofér</div><div class="card-sub">Doviezť kávu do OC Max · dnes</div></div><span class="tag tag-caka">Čaká</span></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Matej — pekáreň</div><div class="card-sub">Pridať 10 bagiet pre Galériu · zajtra</div></div><span class="tag tag-ok">Hotové</span></div></div>
+    <div class="pozn" data-k="ulohy"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech mi príde upozornenie keď je úloha hotová"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PRÍJEM ============ -->
+<div class="scr" id="s-prijem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Príjem (náhľad)</div><div class="hd-s">Čo predajne prijali</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Náhľad na to, čo predajne reálne prijali pri rozvoze — či sedí dodané s objednaným.</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">Prijaté 120 z 120</div></div><span class="tag tag-ok">Sedí</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">Prijaté 82 z 85</div></div><span class="tag tag-zmena">−3</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">OC Max</div><div class="prow-sub">Prijaté 95 z 95</div></div><span class="tag tag-ok">Sedí</span></div>
+    <div class="pozn" data-k="prijem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. upozornenie keď dodané nesedí s objednaným"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ ROZVOZ ============ -->
+<div class="scr" id="s-rozvoz">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Rozvoz (náhľad)</div><div class="hd-s">Trasa šoféra</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Náhľad na dnešnú rozvozovú trasu — poradie zastávok a stav.</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">1 · 17. novembra</div><div class="prow-sub">120 ks · 6:30</div></div><span class="tag tag-ok">Doručené</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">2 · Galéria</div><div class="prow-sub">85 ks · 7:00</div></div><span class="tag tag-ok">Doručené</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">3 · OC Max</div><div class="prow-sub">95 ks · 7:30</div></div><span class="tag tag-caka">Na ceste</span></div>
+    <div class="pozn" data-k="rozvoz"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. vidieť kde presne je šofér práve teraz"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ EXTRA ============ -->
+<div class="scr" id="s-extra">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Pripomienky a návrhy</div><div class="hd-s">Podnety k obrazovke</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Priestor pre podnety, ktoré sa nezmestili inde. Aj drobnosti sú vítané.</div>
+    <div class="pozn" data-k="extra"><div class="pozn-t"><i class="ti ti-pencil"></i> Podnety a návrhy</div><textarea style="min-height:140px" placeholder="napr. čo by vám najviac uľahčilo dennú prácu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ SPODNÁ LIŠTA ============ -->
+<div class="foot">
+  <button class="send" data-poslat="1"><i class="ti ti-send"></i> Odoslať pripomienky <span class="n" id="poznCount">0</span></button>
+  <div class="foot-hint">Pripomienky sa pošlú jedným ťuknutím (alebo skopírujú).</div>
+</div>
+
+<script>
+  // In-memory stav (NIE localStorage — nefunguje vo WhatsApp náhľade/iframe).
+  var POZN = {};
+
+  function go(id){ document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');}); var el=document.getElementById('s-'+id); if(el){ el.classList.add('on'); } window.scrollTo(0,0); }
+  function home(){ go('home'); refreshCount(); }
+
+  // Delegovaný click handler — funguje na touch aj myši, bez dvojkliku (poučenie z Katky).
+  document.addEventListener('click', function(ev){
+    var grp = ev.target.closest('[data-grp]');  if(grp){ toggleGrp(grp); return; }
+    var g = ev.target.closest('[data-go]');     if(g){ go(g.getAttribute('data-go')); return; }
+    if(ev.target.closest('[data-home]')){ home(); return; }
+    if(ev.target.closest('[data-poslat]')){ poslat(); return; }
+    var s = ev.target.closest('[data-step]');   if(s){ stepQty(s); return; }
+  });
+
+  // Rozbalenie/zbalenie skupiny v menu (accordion — otvorí jednu, ostatné nechá).
+  function toggleGrp(btn){
+    var id = btn.getAttribute('data-grp');
+    var body = document.getElementById(id);
+    var open = btn.classList.contains('open');
+    btn.classList.toggle('open', !open);
+    if(body) body.classList.toggle('open', !open);
+  }
+
+  function stepQty(btn){
+    var box = btn.parentElement; var b = box.querySelector('b'); if(!b) return;
+    var n = parseInt(b.textContent, 10) || 0;
+    n += parseInt(btn.getAttribute('data-step'), 10);
+    if(n < 0) n = 0;
+    b.textContent = n;
+  }
+
+  function refreshCount(){
+    var n = 0;
+    Object.keys(POZN).forEach(function(k){ if((POZN[k]||'').trim()) n++; });
+    document.getElementById('poznCount').textContent = n;
+  }
+
+  // Naviaž textarea na in-memory stav.
+  document.querySelectorAll('.pozn').forEach(function(p){
+    var k = p.getAttribute('data-k'); var ta = p.querySelector('textarea');
+    ta.addEventListener('input', function(){
+      POZN[k] = ta.value;
+      p.classList.toggle('filled', !!ta.value.trim());
+    });
+  });
+
+  var LABELS = {prehlad:'Prehľad objednávok', upravit:'Objednávky — upraviť', 'upravit-detail':'Úprava objednávky (detail)', lahodky:'Prehľad lahôdok', korekcie:'Korekcie', navrhy:'Návrhy zmien', kava:'Objednať kávu', presun:'Presun medzi predajňami', ulohy:'Úlohy', prijem:'Príjem', rozvoz:'Rozvoz', extra:'Ďalšie nápady'};
+  function poslat(){
+    var parts = ['ZORA — pripomienky k manažérskej obrazovke (Natália):',''];
+    var any = false;
+    Object.keys(LABELS).forEach(function(k){
+      if((POZN[k]||'').trim()){ any = true; parts.push('• '+LABELS[k]+':'); parts.push('  '+POZN[k].trim()); parts.push(''); }
+    });
+    if(!any){ alert('Zatiaľ neboli zadané žiadne pripomienky. Do polí pri jednotlivých častiach možno doplniť podnety.'); return; }
+    var text = parts.join('\n');
+    if(navigator.share){
+      navigator.share({title:'ZORA — pripomienky (manažér)', text:text}).catch(function(){ copyFallback(text); });
+    } else { copyFallback(text); }
+  }
+  function copyFallback(text){
+    if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ alert('Pripomienky skopírované. Vložte ich do správy a odošlite.'); }, function(){ prompt('Skopírujte tento text a odošlite ho:', text); }); }
+    else { prompt('Skopírujte tento text a odošlite ho:', text); }
+  }
+
+  refreshCount();
+</script>
+</body>
+</html>
