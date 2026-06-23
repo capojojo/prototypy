@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZORA · Cukráreň — Katka (ukážka)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
+<style>
+  :root{
+    --bg:#F5F0E8; --paper:#FFFFFF; --ink:#1F1B16; --grey:#4D463E; --mut:#857D74;
+    --hair:#E4DDCF; --divider:#DAD4CB; --accent:#E8431A; --accent-soft:#FAE5DD;
+    --ok:#3E7C5A; --ok-soft:#E2EFE7;
+  }
+  *{box-sizing:border-box;}
+  button, .rh, .pill, .qty button, .hd-back, .send{cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:rgba(232,67,26,0.15); -webkit-user-select:none; user-select:none;}
+  button{-webkit-appearance:none; appearance:none;}
+  html,body{margin:0; padding:0; background:var(--bg); overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); max-width:440px; margin:0 auto; min-height:100vh; position:relative;}
+  .scr{display:none; flex-direction:column; min-height:100vh; padding-bottom:96px;}
+  .scr.on{display:flex;}
+
+  /* HLAVIČKA */
+  .hd{display:flex; align-items:center; gap:12px; padding:18px 16px 14px; background:var(--bg); position:sticky; top:0; z-index:10; border-bottom:1px solid var(--divider);}
+  .hd .ic{width:44px; height:44px; border-radius:12px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; flex:none;}
+  .hd-back{width:44px; height:44px; border-radius:12px; background:#EFE9DD; border:none; color:var(--ink); font-size:22px; display:flex; align-items:center; justify-content:center; flex:none; cursor:pointer;}
+  .hd-t{font-size:17px; font-weight:600; line-height:1.2;}
+  .hd-s{font-size:12px; color:var(--mut); margin-top:1px;}
+
+  .body{padding:14px 16px 0;}
+
+  /* ÚVODNÝ PRÚŽOK */
+  .hello{background:var(--accent-soft); border-radius:14px; padding:14px 16px; margin-bottom:14px;}
+  .hello b{color:var(--accent);}
+  .hello p{margin:6px 0 0; font-size:13px; color:var(--grey); line-height:1.5;}
+
+  /* DLAŽDICE (home) */
+  .rh{display:flex; align-items:center; gap:13px; background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px; cursor:pointer; width:100%; text-align:left;}
+  .rh:active{transform:scale(.99);}
+  .rh .ti{font-size:24px; color:var(--accent); flex:none; width:26px; text-align:center;}
+  .rh-tx{flex:1; min-width:0;}
+  .rh-t{font-size:15px; font-weight:600;}
+  .rh-s{font-size:12px; color:var(--mut); margin-top:2px;}
+  .rh-badge{flex:none; font-size:12px; font-weight:600; color:var(--accent); background:var(--accent-soft); border-radius:20px; padding:3px 10px;}
+  .rh .chev{color:var(--mut); font-size:20px; flex:none;}
+
+  /* KARTY V SEKCII */
+  .card{background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px;}
+  .card-row{display:flex; align-items:center; gap:10px;}
+  .card-nazov{flex:1; font-size:15px; font-weight:600;}
+  .card-sub{font-size:12px; color:var(--mut); margin-top:2px;}
+  .qty{display:flex; align-items:center; gap:8px; flex:none;}
+  .qty b{font-size:18px; min-width:30px; text-align:center;}
+  .qty button{width:38px; height:38px; border-radius:9px; border:none; font-size:20px; display:flex; align-items:center; justify-content:center; cursor:pointer;}
+  .qty .m{background:#EFE9DD; color:var(--ink);}
+  .qty .p{background:var(--accent); color:#fff;}
+  .tag{display:inline-block; font-size:11px; font-weight:600; border-radius:7px; padding:2px 8px; margin-left:6px;}
+  .tag-nico{background:#EEE9F5; color:#5B4B8A;}
+  .tag-pred{background:#E7EFF5; color:#3D6B8A;}
+  .tag-b2b{background:var(--accent); color:#fff;}
+  .tag-b2c{background:var(--ok-soft); color:var(--ok);}
+  .tag-vik{background:#F3EAD9; color:#8A6D2E;}
+
+  .sec-lbl{font-size:12px; font-weight:600; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px;}
+  .info{font-size:12px; color:var(--grey); background:#EFE9DD; border-radius:10px; padding:10px 12px; margin-bottom:12px; line-height:1.5;}
+  .info i{color:var(--accent);}
+
+  /* POZNÁMKA */
+  .pozn{background:#FFF; border:1.5px dashed var(--accent); border-radius:12px; padding:14px; margin:14px 0 4px;}
+  .pozn-t{font-size:13px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
+  .pozn textarea{width:100%; border:1px solid var(--hair); border-radius:10px; padding:10px; font-size:14px; font-family:inherit; min-height:70px; resize:vertical; box-sizing:border-box; color:var(--ink);}
+  .pozn .hint{font-size:11px; color:var(--mut); margin-top:6px;}
+  .pozn.filled{border-color:var(--ok);}
+  .pozn.filled .pozn-t{color:var(--ok);}
+
+  /* SPODNÁ LIŠTA */
+  .foot{position:fixed; bottom:0; left:0; right:0; max-width:440px; margin:0 auto; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:var(--bg); border-top:1px solid var(--divider);}
+  .send{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:9px; cursor:pointer;}
+  .send .n{background:#fff; color:var(--accent); border-radius:20px; font-size:12px; padding:1px 8px; font-weight:700;}
+  .foot-hint{text-align:center; font-size:11px; color:var(--mut); margin-top:7px;}
+
+  .day-pills{display:flex; gap:6px; overflow-x:auto; padding-bottom:4px; margin-bottom:12px;}
+  .day-pills::-webkit-scrollbar{display:none;}
+  .pill{flex:none; padding:8px 14px; border-radius:20px; border:1px solid var(--hair); background:var(--paper); font-size:13px; cursor:pointer; white-space:nowrap;}
+  .pill.act{background:var(--ink); color:#fff; border-color:var(--ink);}
+  .pill.vik{border-color:var(--accent); color:var(--accent); font-weight:600;}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div class="scr on" id="s-home">
+  <div class="hd">
+    <div class="ic"><i class="ti ti-cake"></i></div>
+    <div><div class="hd-t">Cukráreň — výroba</div><div class="hd-s">Návrh pracovnej obrazovky</div></div>
+  </div>
+  <div class="body">
+    <div class="hello">
+      <b>Návrh pracovnej obrazovky</b>
+      <p>Toto je návrh obrazovky pre cukrársku výrobu v systéme ZORA. Prosím prejdite si jednotlivé časti. Pri každej je pole <b>„Pripomienka k tejto časti"</b> na poznámky — čo chýba alebo čo by uľahčilo prácu. Na konci sa pripomienky odošlú jedným ťuknutím. Uvedené čísla sú ilustračné.</p>
+    </div>
+
+    <button class="rh" data-go="vyroba">
+      <i class="ti ti-tools-kitchen-2"></i>
+      <div class="rh-tx"><div class="rh-t">Výroba na dnes</div><div class="rh-s">Súhrn množstiev na dnešný deň</div></div>
+      <span class="rh-badge">5</span><i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="obj">
+      <i class="ti ti-clipboard-list"></i>
+      <div class="rh-tx"><div class="rh-t">Objednávky prevádzok</div><div class="rh-s">NICO a predajne · D-2</div></div>
+      <span class="rh-badge">4</span><i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="b2b">
+      <i class="ti ti-building-store"></i>
+      <div class="rh-tx"><div class="rh-t">Objednávky B2B</div><div class="rh-s">Externí odberatelia</div></div>
+      <span class="rh-badge">2</span><i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="b2c">
+      <i class="ti ti-gift"></i>
+      <div class="rh-tx"><div class="rh-t">Torty na objednávku</div><div class="rh-s">Zákaznícke objednávky na termín</div></div>
+      <span class="rh-badge">3</span><i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="plan">
+      <i class="ti ti-calendar-week"></i>
+      <div class="rh-tx"><div class="rh-t">Plán výroby</div><div class="rh-s">Výhľad podľa dní</div></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="sortiment">
+      <i class="ti ti-list-details"></i>
+      <div class="rh-tx"><div class="rh-t">Sortiment</div><div class="rh-s">Zoznam výrobkov</div></div>
+      <span class="rh-badge">8</span><i class="ti ti-chevron-right chev"></i>
+    </button>
+
+    <button class="rh" data-go="extra" style="border-style:dashed; border-color:var(--accent);">
+      <i class="ti ti-bulb"></i>
+      <div class="rh-tx"><div class="rh-t" style="color:var(--accent)">Pripomienky a návrhy</div><div class="rh-s">Čo v obrazovke chýba alebo by pomohlo</div></div>
+      <i class="ti ti-chevron-right chev"></i>
+    </button>
+  </div>
+
+  <div class="foot">
+    <button class="send" data-poslat="1"><i class="ti ti-send"></i> Odoslať pripomienky <span class="n" id="poznCount">0</span></button>
+    <div class="foot-hint">Tvoje poznámky sa uložia aj keď appku zavrieš.</div>
+  </div>
+</div>
+
+<!-- ============ DNES PIECŤ ============ -->
+<div class="scr" id="s-vyroba">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Výroba na dnes</div><div class="hd-s">Streda 24. 6.</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Súhrn množstiev zo všetkých objednávok na dnešný deň. Sčítané automaticky.</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Tiramisu</div><div class="card-sub">pre NICO PO + NICO KE</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>14</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Cheesecake mango-marakuja</div><div class="card-sub">NICO PO + 1× B2B</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>9</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Cookies</div><div class="card-sub">predajne</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>40</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Banánový chlieb</div><div class="card-sub">NICO PO</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>6</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Torta čokoládová 18 cm</div><div class="card-sub">1× zákazník (Nováková) <span class="tag tag-b2c">B2C</span></div></div><div class="qty"><button class="m" data-step="-1">−</button><b>1</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="pozn" data-k="vyroba"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. doplniť prehľad potrebných surovín"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ OBJEDNÁVKY ============ -->
+<div class="scr" id="s-obj">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednávky prevádzok</div><div class="hd-s">NICO a predajne · piatok 26. 6.</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Prevádzky objednávajú <i>2 dni dopredu (D-2)</i>. Prehľad objednávok na piatok.</div>
+    <div class="card"><div class="card-nazov">NICO Prešov <span class="tag tag-nico">NICO</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Tiramisu · 8<br>Cheesecake · 4<br>Banánový chlieb · 3</div></div>
+    <div class="card"><div class="card-nazov">NICO Košice <span class="tag tag-nico">NICO</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Tiramisu · 6<br>Cookies · 20</div></div>
+    <div class="card"><div class="card-nazov">Predajňa 1711 <span class="tag tag-pred">predajňa</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Cookies · 20<br>Torty (krížová výroba — sladké dováža Zuzana, dopečenie v cukrárni)</div></div>
+    <div class="card"><div class="card-nazov">Tržnica stánok <span class="tag tag-pred">predajňa</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Zákusky mix · 15</div></div>
+    <div class="pozn" data-k="obj"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. zobraziť, kto a kedy objednávku zmenil"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ B2B ============ -->
+<div class="scr" id="s-b2b">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednávky B2B</div><div class="hd-s">Externí odberatelia</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Objednávky od externých odberateľov (mimo interných prevádzok).</div>
+    <div class="card"><div class="card-nazov">Kaviareň U Macka <span class="tag tag-b2b">B2B</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Cheesecake · 5 · <b>na štvrtok</b><br>Tiramisu · 8 · na štvrtok</div></div>
+    <div class="card"><div class="card-nazov">Hotel Slávia <span class="tag tag-b2b">B2B</span></div><div class="card-sub" style="margin-top:6px; line-height:1.7">Dezertné mini-zákusky · 30 · <b>na sobotu</b><br>Poznámka: bez orechov</div></div>
+    <div class="pozn" data-k="b2b"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. evidovať pri odberateľovi špecifické požiadavky (alergény)"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ B2C ============ -->
+<div class="scr" id="s-b2c">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Torty na objednávku</div><div class="hd-s">Zákaznícke objednávky na termín</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Zákaznícke torty na konkrétny termín (oslavy, svadby).</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Nováková — narodeniny <span class="tag tag-b2c">B2C</span></div><div class="card-sub" style="margin-top:4px; line-height:1.6">Čokoládová 18 cm · nápis „Všetko najlepšie"<br><b>Vyzdvihnutie: dnes 15:00</b></div></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Svadba Kováčovci <span class="tag tag-b2c">B2C</span></div><div class="card-sub" style="margin-top:4px; line-height:1.6">3-poschodová · vanilka/ovocie · 40 porcií<br><b>Vyzdvihnutie: sobota 10:00</b> · záloha zaplatená</div></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Horváth — krst <span class="tag tag-b2c">B2C</span></div><div class="card-sub" style="margin-top:4px; line-height:1.6">Cheesecake torta · bez lepku<br><b>Vyzdvihnutie: nedeľa 12:00</b></div></div></div></div>
+    <div class="pozn" data-k="b2c"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. evidovať pri torte alergény, zálohu a kontakt na zákazníka"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PLÁNOVANIE ============ -->
+<div class="scr" id="s-plan">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Plán výroby</div><div class="hd-s">Výhľad podľa dní</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Objednávky padajú <i>2 dni dopredu</i>. V <i>piatok sa pečie na celý víkend</i> (sobota, nedeľa, pondelok) — cez víkend sa nevyrába.</div>
+    <div class="day-pills">
+      <button class="pill act">Str 24.6.</button>
+      <button class="pill">Štv 25.6.</button>
+      <button class="pill vik">Pia 26.6. · víkend</button>
+      <button class="pill">Pon 29.6.</button>
+    </div>
+    <div class="sec-lbl">Streda — bežný deň</div>
+    <div class="card"><div class="card-sub" style="line-height:1.7">Tiramisu · 14<br>Cheesecake · 9<br>Cookies · 40<br>1× torta B2C</div></div>
+    <div class="sec-lbl" style="color:var(--accent)">Piatok — výroba na sobotu, nedeľu a pondelok</div>
+    <div class="card" style="border-color:var(--accent)"><div class="card-sub" style="line-height:1.7"><b>Sobota:</b> svadba Kováčovci, B2B Hotel Slávia 30<br><b>Nedeľa:</b> krst Horváth, zákusky stánky<br><b>Pondelok:</b> NICO PO+KE bežná dávka</div></div>
+    <div class="pozn" data-k="plan"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. rozdeliť piatkovú výrobu podľa jednotlivých dní"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ SORTIMENT ============ -->
+<div class="scr" id="s-sortiment">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Sortiment</div><div class="hd-s">Zoznam výrobkov</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Prehľad výrobkov. Miesto na pridanie alebo úpravu položky sortimentu.</div>
+    <div class="card"><div class="card-nazov">Tiramisu</div><div class="card-sub">porcia · stála ponuka</div></div>
+    <div class="card"><div class="card-nazov">Cheesecake mango-marakuja</div><div class="card-sub">porcia · stála ponuka</div></div>
+    <div class="card"><div class="card-nazov">Torty na objednávku</div><div class="card-sub">na termín · rôzne veľkosti</div></div>
+    <div class="card"><div class="card-nazov">Cookies</div><div class="card-sub">ks · denne</div></div>
+    <div class="card"><div class="card-nazov">Banánový chlieb</div><div class="card-sub">ks</div></div>
+    <div class="card"><div class="card-nazov">Mini-zákusky (mix)</div><div class="card-sub">ks · B2B/stánky</div></div>
+    <div class="card"><div class="card-nazov">Cheesecake torta bez lepku</div><div class="card-sub">na objednávku</div></div>
+    <div class="card"><div class="card-nazov">Sezónne (Vianoce/Veľká noc)</div><div class="card-sub">podľa obdobia</div></div>
+    <div class="pozn" data-k="sortiment"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. doplniť chýbajúci výrobok alebo pridať recept a gramáže"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ EXTRA ============ -->
+<div class="scr" id="s-extra">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Pripomienky a návrhy</div><div class="hd-s">Podnety k obrazovke</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Priestor pre podnety, ktoré sa nezmestili inde. Aj drobnosti sú vítané.</div>
+    <div class="pozn" data-k="extra"><div class="pozn-t"><i class="ti ti-pencil"></i> Podnety a návrhy</div><textarea style="min-height:140px" placeholder="napr. týždenný prehľad výroby alebo upozornenie na položky na dopečenie"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<script>
+  var KEY = 'zora_katka_pozn_v1';
+  function load(){ try{ return JSON.parse(localStorage.getItem(KEY)||'{}'); }catch(e){ return {}; } }
+  function save(o){ try{ localStorage.setItem(KEY, JSON.stringify(o)); }catch(e){} }
+
+  function go(id){ document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');}); document.getElementById('s-'+id).classList.add('on'); window.scrollTo(0,0); }
+  function home(){ go('home'); refreshCount(); }
+
+  // iOS/mobil oprava: niektoré mobilné prehliadače nespustia onclick na ťuk spoľahlivo.
+  // Delegovaný click handler na celý dokument — funguje na touch aj myši, bez dvojkliku.
+  document.addEventListener('click', function(ev){
+    var g = ev.target.closest('[data-go]');     if(g){ go(g.getAttribute('data-go')); return; }
+    if(ev.target.closest('[data-home]')){ home(); return; }
+    if(ev.target.closest('[data-poslat]')){ poslat(); return; }
+    var s = ev.target.closest('[data-step]');   if(s){ stepQty(s); return; }
+  });
+
+  // Stepper +/− v ukážke: mení číslo vedľa tlačidla (vizuálne, nech to pôsobí živo).
+  function stepQty(btn){
+    var box = btn.parentElement; var b = box.querySelector('b'); if(!b) return;
+    var n = parseInt(b.textContent, 10) || 0;
+    n += parseInt(btn.getAttribute('data-step'), 10);
+    if(n < 0) n = 0;
+    b.textContent = n;
+  }
+
+  function refreshCount(){
+    var d = load(); var n = 0;
+    Object.keys(d).forEach(function(k){ if((d[k]||'').trim()) n++; });
+    document.getElementById('poznCount').textContent = n;
+  }
+
+  // naviaž textarea na úložisko
+  document.querySelectorAll('.pozn').forEach(function(p){
+    var k = p.getAttribute('data-k'); var ta = p.querySelector('textarea');
+    var d = load(); if(d[k]) { ta.value = d[k]; p.classList.add('filled'); }
+    ta.addEventListener('input', function(){
+      var dd = load(); dd[k] = ta.value; save(dd);
+      p.classList.toggle('filled', !!ta.value.trim());
+    });
+  });
+
+  var LABELS = {vyroba:'Dnes piecť', obj:'Objednávky NICO+predajne', b2b:'B2B objednávky', b2c:'Torty na objednávku', plan:'Plánovanie', sortiment:'Sortiment', extra:'Ďalšie nápady'};
+  function poslat(){
+    var d = load(); var parts = ['ZORA — pripomienky k obrazovke cukrárskej výroby (Katka):',''];
+    var any = false;
+    Object.keys(LABELS).forEach(function(k){
+      if((d[k]||'').trim()){ any = true; parts.push('• '+LABELS[k]+':'); parts.push('  '+d[k].trim()); parts.push(''); }
+    });
+    if(!any){ alert('Zatiaľ neboli zadané žiadne pripomienky. Do polí pri jednotlivých častiach možno doplniť podnety.'); return; }
+    var text = parts.join('\n');
+    if(navigator.share){
+      navigator.share({title:'ZORA — pripomienky (cukráreň)', text:text}).catch(function(){ copyFallback(text); });
+    } else { copyFallback(text); }
+  }
+  function copyFallback(text){
+    if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ alert('Pripomienky skopírované. Vložte ich do správy a odošlite.'); }, function(){ prompt('Skopírujte tento text a odošlite ho:', text); }); }
+    else { prompt('Skopírujte tento text a odošlite ho:', text); }
+  }
+
+  refreshCount();
+</script>
+</body>
+</html>
