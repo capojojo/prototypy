@@ -6,89 +6,99 @@
 <title>ZORA · Chlebová pekáreň — Matej (ukážka)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
 <style>
-  :root{
-    --bg:#F5F0E8; --paper:#FFFFFF; --ink:#1F1B16; --grey:#4D463E; --mut:#857D74;
-    --hair:#E4DDCF; --divider:#DAD4CB; --accent:#E8431A; --accent-soft:#FAE5DD;
-    --ok:#3E7C5A; --ok-soft:#E2EFE7; --warn:#9A6A00; --warn-soft:#FDF0D5;
-  }
+  :root{--bg:#F5F0E8;--paper:#FFFFFF;--ink:#1F1B16;--grey:#4D463E;--mut:#857D74;--hair:#E4DDCF;--divider:#DAD4CB;--accent:#E8431A;--accent-soft:#FAE5DD;--ok:#3E7C5A;--ok-soft:#E2EFE7;--warn:#9A6A00;--warn-soft:#FDF0D5;}
   *{box-sizing:border-box;}
-  button, .rh, .pill, .qty button, .hd-back, .send, .act-btn, .chk-card{cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:rgba(232,67,26,0.15); -webkit-user-select:none; user-select:none;}
-  button{-webkit-appearance:none; appearance:none;}
-  html,body{margin:0; padding:0; background:var(--bg); overflow-x:hidden;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); max-width:440px; margin:0 auto; min-height:100vh; position:relative;}
-  .scr{display:none; flex-direction:column; min-height:100vh; padding-bottom:96px;}
+  button,.rh,.qty button,.hd-back,.send,.act-btn,.chk-card,.chip,.filt button,.tgl{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(232,67,26,0.15);-webkit-user-select:none;user-select:none;}
+  button{-webkit-appearance:none;appearance:none;}
+  html,body{margin:0;padding:0;background:var(--bg);overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);max-width:440px;margin:0 auto;min-height:100vh;position:relative;}
+  .scr{display:none;flex-direction:column;min-height:100vh;padding-bottom:96px;}
   .scr.on{display:flex;}
-  .hd{display:flex; align-items:center; gap:12px; padding:18px 16px 14px; background:var(--bg); position:sticky; top:0; z-index:10; border-bottom:1px solid var(--divider);}
-  .hd .ic{width:44px; height:44px; border-radius:12px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; flex:none;}
-  .hd-back{width:44px; height:44px; border-radius:12px; background:#EFE9DD; border:none; color:var(--ink); font-size:22px; display:flex; align-items:center; justify-content:center; flex:none;}
-  .hd-t{font-size:17px; font-weight:600; line-height:1.2;}
-  .hd-s{font-size:12px; color:var(--mut); margin-top:1px;}
+  .hd{display:flex;align-items:center;gap:12px;padding:18px 16px 14px;background:var(--bg);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--divider);}
+  .hd .ic{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;}
+  .hd-back{width:44px;height:44px;border-radius:12px;background:#EFE9DD;border:none;color:var(--ink);font-size:22px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hd-t{font-size:17px;font-weight:600;line-height:1.2;}
+  .hd-s{font-size:12px;color:var(--mut);margin-top:1px;}
   .body{padding:14px 16px 0;}
-  .hello{background:var(--accent-soft); border-radius:14px; padding:14px 16px; margin-bottom:14px;}
+  .hello{background:var(--accent-soft);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
   .hello b{color:var(--accent);}
-  .hello p{margin:6px 0 0; font-size:13px; color:var(--grey); line-height:1.5;}
-  .rh{display:flex; align-items:center; gap:13px; background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px; width:100%; text-align:left;}
+  .hello p{margin:6px 0 0;font-size:13px;color:var(--grey);line-height:1.5;}
+  .rh{display:flex;align-items:center;gap:13px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;width:100%;text-align:left;}
   .rh:active{transform:scale(.99);}
-  .rh .ti{font-size:24px; color:var(--accent); flex:none; width:26px; text-align:center;}
-  .rh-tx{flex:1; min-width:0;}
-  .rh-t{font-size:15px; font-weight:600;}
-  .rh-s{font-size:12px; color:var(--mut); margin-top:2px;}
-  .rh-badge{flex:none; font-size:12px; font-weight:600; color:#fff; background:var(--accent); border-radius:20px; padding:3px 10px;}
-  .rh .chev{color:var(--mut); font-size:20px; flex:none;}
-  .grp{display:flex; align-items:center; gap:13px; background:var(--ink); border:1px solid var(--ink); border-radius:12px; padding:15px 14px; margin-bottom:8px; width:100%; text-align:left;}
-  .grp:active{transform:scale(.99);}
-  .grp .ti{font-size:24px; color:#fff; flex:none; width:26px; text-align:center;}
-  .grp .rh-t{color:#fff; font-size:16px;}
-  .grp .rh-s{color:#C9C2B6;}
-  .grp .grp-chev{color:#C9C2B6; font-size:22px; transition:transform .2s;}
-  .grp.open .grp-chev{transform:rotate(180deg);}
-  .grp-body{display:none; padding:2px 0 6px 0; margin-bottom:8px;}
-  .grp-body.open{display:block;}
-  .sub{display:flex; align-items:center; gap:12px; background:var(--paper); border:1px solid var(--hair); border-radius:11px; padding:13px 14px; margin:0 0 7px 14px; width:calc(100% - 14px); text-align:left;}
-  .sub:active{transform:scale(.99);}
-  .sub .ti{font-size:21px; color:var(--accent); flex:none; width:24px; text-align:center;}
-  .sub .rh-t{font-size:14px; font-weight:600;}
-  .sub .rh-s{font-size:11px; color:var(--mut); margin-top:1px;}
-  .sub .chev{color:var(--mut); font-size:18px; flex:none;}
-  .card{background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px;}
-  .card-row{display:flex; align-items:center; gap:10px;}
-  .card-nazov{flex:1; font-size:15px; font-weight:600; min-width:0;}
-  .card-sub{font-size:12px; color:var(--mut); margin-top:2px;}
-  .qty{display:flex; align-items:center; gap:8px; flex:none;}
-  .qty b{font-size:18px; min-width:30px; text-align:center;}
-  .qty button{width:38px; height:38px; border-radius:9px; border:none; font-size:20px; display:flex; align-items:center; justify-content:center;}
-  .qty .m{background:#EFE9DD; color:var(--ink);}
-  .qty .p{background:var(--accent); color:#fff;}
-  .chk{width:34px; height:34px; flex:none; display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--mut);}
+  .rh .ti{font-size:24px;color:var(--accent);flex:none;width:26px;text-align:center;}
+  .rh-tx{flex:1;min-width:0;}
+  .rh-t{font-size:15px;font-weight:600;}
+  .rh-s{font-size:12px;color:var(--mut);margin-top:2px;}
+  .rh-badge{flex:none;font-size:12px;font-weight:600;color:#fff;background:var(--accent);border-radius:20px;padding:3px 10px;}
+  .rh .chev{color:var(--mut);font-size:20px;flex:none;}
+  .card{background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;}
+  .card-row{display:flex;align-items:center;gap:10px;}
+  .card-nazov{flex:1;font-size:15px;font-weight:600;min-width:0;}
+  .card-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .qty{display:flex;align-items:center;gap:8px;flex:none;}
+  .qty b{font-size:18px;min-width:30px;text-align:center;}
+  .qty button{width:38px;height:38px;border-radius:9px;border:none;font-size:20px;display:flex;align-items:center;justify-content:center;}
+  .qty .m{background:#EFE9DD;color:var(--ink);}
+  .qty .p{background:var(--accent);color:#fff;}
+  .chk{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--mut);}
   .chk-card.done{opacity:.62;}
   .chk-card.done .card-nazov{text-decoration:line-through;}
   .chk-card.done .chk{color:var(--ok);}
-  .tag{display:inline-block; font-size:11px; font-weight:700; border-radius:7px; padding:3px 9px; flex:none; text-transform:uppercase; letter-spacing:.03em;}
-  .tag-ok{background:var(--ok-soft); color:var(--ok);}
-  .tag-zmena{background:var(--accent-soft); color:var(--accent);}
-  .tag-sab{background:#EFE9DD; color:var(--mut);}
-  .tag-caka{background:var(--warn-soft); color:var(--warn);}
-  .tag-zam{background:#FBE4E2; color:#C0392B;}
-  .sec-lbl{font-size:12px; font-weight:600; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px;}
-  .info{font-size:12px; color:var(--grey); background:#EFE9DD; border-radius:10px; padding:10px 12px; margin-bottom:12px; line-height:1.5;}
+  .plan-row{display:flex;align-items:center;gap:10px;}
+  .plan-naz{flex:1;font-size:15px;font-weight:600;}
+  .plan-ks{font-size:18px;font-weight:700;color:var(--accent);}
+  .plan-rozpad{margin-top:8px;border-top:1px solid var(--divider);padding-top:6px;}
+  .pr-line{display:flex;justify-content:space-between;font-size:13px;color:var(--grey);padding:3px 0;}
+  .pr-line span:last-child{font-weight:600;color:var(--ink);}
+  .prow{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+  .prow-tx{flex:1;min-width:0;}
+  .prow-naz{font-size:15px;font-weight:600;}
+  .prow-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:7px;padding:3px 9px;flex:none;text-transform:uppercase;letter-spacing:.03em;}
+  .tag-ok{background:var(--ok-soft);color:var(--ok);}
+  .tag-zmena{background:var(--accent-soft);color:var(--accent);}
+  .tag-sab{background:#EFE9DD;color:var(--mut);}
+  .tag-caka{background:var(--warn-soft);color:var(--warn);}
+  .sec-lbl{font-size:12px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 8px;}
+  .info{font-size:12px;color:var(--grey);background:#EFE9DD;border-radius:10px;padding:10px 12px;margin-bottom:12px;line-height:1.5;}
   .info i.ti{color:var(--accent);}
-  .act-row{display:flex; gap:8px; margin-top:12px;}
-  .act-btn{flex:1; min-height:46px; border-radius:11px; font-size:14px; font-weight:600; border:1px solid var(--hair); display:flex; align-items:center; justify-content:center; gap:7px;}
-  .act-btn.primary{background:var(--ink); color:#fff; border-color:var(--ink);}
-  .act-btn.accent{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .status-box{border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;}
+  .status-box i.ti{font-size:22px;flex:none;}
+  .sb-ok{background:var(--ok-soft);color:var(--ok);}
+  .sb-warn{background:var(--warn-soft);color:var(--warn);}
+  .pozn-piatok{background:var(--warn-soft);border:1.5px solid var(--warn);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--warn);display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
+  .pozn-piatok i.ti{font-size:20px;flex:none;}
+  .act-row{display:flex;gap:8px;margin-top:12px;}
+  .act-btn{flex:1;min-height:46px;border-radius:11px;font-size:14px;font-weight:600;border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;gap:7px;background:var(--paper);color:var(--ink);}
+  .act-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .act-btn.ghost{background:transparent;color:var(--mut);}
   .fld{margin:14px 0 0;}
-  .fld label{display:block; font-size:13px; font-weight:600; color:var(--grey); margin-bottom:6px;}
-  .fld select, .fld input{width:100%; min-height:48px; padding:0 12px; font-size:15px; border:1px solid var(--hair); border-radius:11px; background:var(--paper); color:var(--ink); font-family:inherit;}
-  .pozn{background:#FFF; border:1.5px dashed var(--accent); border-radius:12px; padding:14px; margin:16px 0 4px;}
-  .pozn-t{font-size:13px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
-  .pozn textarea{width:100%; border:1px solid var(--hair); border-radius:10px; padding:10px; font-size:14px; font-family:inherit; min-height:70px; resize:vertical; box-sizing:border-box; color:var(--ink);}
-  .pozn .hint{font-size:11px; color:var(--mut); margin-top:6px;}
+  .fld label{display:block;font-size:13px;font-weight:600;color:var(--grey);margin-bottom:6px;}
+  .fld select,.fld input,.fld textarea{width:100%;min-height:48px;padding:12px;font-size:15px;border:1px solid var(--hair);border-radius:11px;background:var(--paper);color:var(--ink);font-family:inherit;}
+  .fld textarea{min-height:120px;resize:vertical;}
+  .fld-2{display:flex;gap:8px;}
+  .fld-2 .fld{flex:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .chip{padding:9px 13px;border:1px solid var(--hair);border-radius:10px;font-size:13px;font-weight:600;background:var(--paper);}
+  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .chip-sm{min-width:42px;text-align:center;padding:9px 0;}
+  .tgl-row{display:flex;align-items:center;gap:12px;margin-top:14px;}
+  .tgl-row .lbl{flex:1;font-size:14px;font-weight:600;}
+  .tgl{position:relative;width:48px;height:28px;background:var(--divider);border-radius:20px;flex:none;transition:.2s;border:none;}
+  .tgl.on{background:var(--accent);}
+  .tgl::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s;}
+  .tgl.on::after{transform:translateX(20px);}
+  .pozn{background:#FFF;border:1.5px dashed var(--accent);border-radius:12px;padding:14px;margin:16px 0 4px;}
+  .pozn-t{font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+  .pozn textarea{width:100%;border:1px solid var(--hair);border-radius:10px;padding:10px;font-size:14px;font-family:inherit;min-height:70px;resize:vertical;box-sizing:border-box;color:var(--ink);}
+  .pozn .hint{font-size:11px;color:var(--mut);margin-top:6px;}
   .pozn.filled{border-color:var(--ok);}
   .pozn.filled .pozn-t{color:var(--ok);}
-  .foot{position:fixed; bottom:0; left:0; right:0; max-width:440px; margin:0 auto; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:var(--bg); border-top:1px solid var(--divider);}
-  .send{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:9px;}
-  .send .n{background:#fff; color:var(--accent); border-radius:20px; font-size:12px; padding:1px 8px; font-weight:700;}
-  .foot-hint{text-align:center; font-size:11px; color:var(--mut); margin-top:7px;}
+  .foot{position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--divider);}
+  .send{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;}
+  .send .n{background:#fff;color:var(--accent);border-radius:20px;font-size:12px;padding:1px 8px;font-weight:700;}
+  .foot-hint{text-align:center;font-size:11px;color:var(--mut);margin-top:7px;}
 </style>
 </head>
 <body>
@@ -102,48 +112,68 @@
   <div class="body">
     <div class="hello">
       <b>Návrh pracovnej obrazovky</b>
-      <p>Toto je návrh tvojej obrazovky v systéme ZORA. Prosím prejdi si časti a vyskúšaj ich. Pri každej je pole <b>„Pripomienka k tejto časti"</b> — čo chýba, čo by uľahčilo prácu, čo zmeniť. Na konci sa pripomienky odošlú jedným ťuknutím. Čísla a položky sú ilustračné.</p>
+      <p>Toto je návrh tvojej obrazovky v systéme ZORA — zodpovedá tomu, čo máš reálne nasadené. Prejdi si časti a vyskúšaj ich. Pri každej je pole <b>„Pripomienka k tejto časti"</b>. Na konci sa pripomienky odošlú jedným ťuknutím. Čísla a položky sú ilustračné.</p>
     </div>
-
-    <button class="rh" data-go="vyroba">
-      <i class="ti ti-flame"></i>
-      <div class="rh-tx"><div class="rh-t">Dnešná výroba</div><div class="rh-s">Čo upiecť · odškrtni hotové</div></div>
-      <span class="rh-badge">4</span><i class="ti ti-chevron-right chev"></i>
-    </button>
-
-    <button class="grp" data-grp="g-sklad">
-      <i class="ti ti-box-seam"></i>
-      <div class="rh-tx"><div class="rh-t">Sklad a tovar</div><div class="rh-s">Nákup surovín (Metro)</div></div>
-      <i class="ti ti-chevron-down chev grp-chev"></i>
-    </button>
-    <div class="grp-body" id="g-sklad">
-      <button class="sub" data-go="nakup"><i class="ti ti-shopping-cart"></i><div class="rh-tx"><div class="rh-t">Nákup (Metro)</div><div class="rh-s">Suroviny · pridať a odškrtnúť</div></div><i class="ti ti-chevron-right chev"></i></button>
-    </div>
-
-    <button class="rh" data-go="ulohy">
-      <i class="ti ti-checklist"></i>
-      <div class="rh-tx"><div class="rh-t">Úlohy</div><div class="rh-s">Čo treba spraviť</div></div>
-      <span class="rh-badge">2</span><i class="ti ti-chevron-right chev"></i>
-    </button>
-
-    <button class="rh" data-go="extra" style="margin-top:14px">
-      <i class="ti ti-message-plus"></i>
-      <div class="rh-tx"><div class="rh-t">Pripomienky a návrhy</div><div class="rh-s">Čokoľvek, čo sa nezmestilo inde</div></div>
-      <i class="ti ti-chevron-right chev"></i>
-    </button>
+    <button class="rh" data-go="vypek"><i class="ti ti-flame"></i><div class="rh-tx"><div class="rh-t">Výpek</div><div class="rh-s">Čo dnes piecť</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="vyroba"><i class="ti ti-tools-kitchen-2"></i><div class="rh-tx"><div class="rh-t">Výroba</div><div class="rh-s">Výrobný plán</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="balenie"><i class="ti ti-package"></i><div class="rh-tx"><div class="rh-t">Balenie</div><div class="rh-s">Stav balenia · odoslať šoférovi</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="prehlad"><i class="ti ti-chart-bar"></i><div class="rh-tx"><div class="rh-t">Prehľad objednávok</div><div class="rh-s">Čo si predajne objednali</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="nakup"><i class="ti ti-shopping-cart"></i><div class="rh-tx"><div class="rh-t">Nákup (Metro)</div><div class="rh-s">Suroviny · čo treba kúpiť</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="novyprodukt"><i class="ti ti-plus"></i><div class="rh-tx"><div class="rh-t">Nový produkt</div><div class="rh-s">Pridať do katalógu</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="potrebujem"><i class="ti ti-basket"></i><div class="rh-tx"><div class="rh-t">Potrebujem</div><div class="rh-s">Požiadavka na obaly/hygienu</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="problem"><i class="ti ti-alert-triangle"></i><div class="rh-tx"><div class="rh-t">Nahlásiť problém</div><div class="rh-s">Pokazené, chýbajúce…</div></div><i class="ti ti-chevron-right chev"></i></button>
   </div>
 </div>
 
-<!-- ============ DNEŠNÁ VÝROBA ============ -->
-<div class="scr" id="s-vyroba">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Dnešná výroba</div><div class="hd-s">výpek dnes • predaj zajtra</div></div></div>
+<!-- ============ VÝPEK ============ -->
+<div class="scr" id="s-vypek">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Výpek</div><div class="hd-s">Dnes · Štvrtok 26. júna · Chlebová</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Zoznam chlebov na dnešný výpek a počty. Ťuknutím odškrtneš, čo je už upečené.</div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Pšeničný</div><div class="card-sub">40 ks · na upečenie</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Ražný</div><div class="card-sub">25 ks · na upečenie</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Kváskový</div><div class="card-sub">30 ks · na upečenie</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Celozrnný</div><div class="card-sub">15 ks · na upečenie</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="pozn" data-k="vyroba"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť aj koľko zostáva domiesiť, alebo poradie pečenia"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Koľko kusov dnes upiecť, rozpísané po predajniach. Len na pozeranie.</div>
+    <div class="sec-lbl">Na dnes · štvrtok 26. júna</div>
+    <div class="card"><div class="plan-row"><div class="plan-naz">Chlieb kváskový</div><div class="plan-ks">95 ks</div></div><div class="plan-rozpad"><div class="pr-line"><span>17. novembra</span><span>30</span></div><div class="pr-line"><span>OC Max</span><span>25</span></div><div class="pr-line"><span>Galéria</span><span>20</span></div><div class="pr-line"><span>Masarykova</span><span>20</span></div></div></div>
+    <div class="card"><div class="plan-row"><div class="plan-naz">Pšeničný</div><div class="plan-ks">40 ks</div></div><div class="plan-rozpad"><div class="pr-line"><span>17. novembra</span><span>15</span></div><div class="pr-line"><span>OC Max</span><span>15</span></div><div class="pr-line"><span>Galéria</span><span>10</span></div></div></div>
+    <div class="card"><div class="plan-row"><div class="plan-naz">Ražný</div><div class="plan-ks">25 ks</div></div><div class="plan-rozpad"><div class="pr-line"><span>17. novembra</span><span>10</span></div><div class="pr-line"><span>Masarykova</span><span>15</span></div></div></div>
+    <div class="pozn" data-k="vypek"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť aj celkový súčet múky na zámes"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ VÝROBA (PLÁN) ============ -->
+<div class="scr" id="s-vyroba">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Výrobný plán</div><div class="hd-s">Zajtra · Piatok 27. júna · Chlebová</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Plán výroby na ďalší deň — koľko kusov a pre ktoré predajne.</div>
+    <div class="sec-lbl">Na piatok · 27. júna</div>
+    <div class="card"><div class="plan-row"><div class="plan-naz">Chlieb kváskový</div><div class="plan-ks">110 ks</div></div><div class="plan-rozpad"><div class="pr-line"><span>17. novembra</span><span>35</span></div><div class="pr-line"><span>OC Max</span><span>30</span></div><div class="pr-line"><span>Galéria</span><span>25</span></div><div class="pr-line"><span>Masarykova</span><span>20</span></div></div></div>
+    <div class="card"><div class="plan-row"><div class="plan-naz">Pšeničný</div><div class="plan-ks">45 ks</div></div><div class="plan-rozpad"><div class="pr-line"><span>17. novembra</span><span>20</span></div><div class="pr-line"><span>OC Max</span><span>15</span></div><div class="pr-line"><span>Galéria</span><span>10</span></div></div></div>
+    <div class="pozn" data-k="vyroba"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím plán na 3 dni dopredu kvôli zámesu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ BALENIE ============ -->
+<div class="scr" id="s-balenie">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Balenie</div><div class="hd-s">Štvrtok 26. júna</div></div></div>
+  <div class="body">
+    <div class="status-box sb-warn"><i class="ti ti-clock-hour-4"></i><div><b>Lahôdky ešte nepotvrdené.</b> Valér zatiaľ nepotvrdil zabalenie lahôdok — finálne listy treba počkať.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Keď je všetko zabalené, odošleš finálne baliace listy šoférovi na rozvoz.</div>
+    <div class="act-row"><button class="act-btn"><i class="ti ti-adjustments"></i> Korekcia balenia</button></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-truck"></i> Odoslať finálne listy šoférovi</button></div>
+    <div class="pozn" data-k="balenie"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech mi príde upozornenie keď Valér potvrdí lahôdky"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PREHĽAD OBJEDNÁVOK ============ -->
+<div class="scr" id="s-prehlad">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Prehľad objednávok</div><div class="hd-s">Štvrtok · všetky predajne</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Čo si predajne objednali na výpek — pečivo za všetky predajne naraz.</div>
+    <div class="sec-lbl">Prešov</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">120 ks · pečivo</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">85 ks · pečivo</div></div><span class="tag tag-zmena">Zmena</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">OC Max</div><div class="prow-sub">95 ks · pečivo</div></div><span class="tag tag-sab">Šablóna</span></div>
+    <div class="sec-lbl">Košice</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Masarykova</div><div class="prow-sub">70 ks · pečivo</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="pozn" data-k="prehlad"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. chcem vidieť rozpis po jednotlivých druhoch pečiva"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
@@ -162,23 +192,47 @@
   </div>
 </div>
 
-<!-- ============ ÚLOHY ============ -->
-<div class="scr" id="s-ulohy">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Úlohy</div><div class="hd-s">Čo treba spraviť</div></div></div>
+<!-- ============ NOVÝ PRODUKT ============ -->
+<div class="scr" id="s-novyprodukt">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Nový produkt</div><div class="hd-s">Vyplň údaje</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Úlohy pre teba. Ťuknutím odškrtneš hotovú.</div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Vyčistiť pec</div><div class="card-sub">dnes · po výpeku</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Skontrolovať zásobu múky</div><div class="card-sub">dnes</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="pozn" data-k="ulohy"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech mi príde upozornenie na novú úlohu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Pridáš nový produkt do katalógu — názov, cena, kategória, alergény, recept, foto a počty pre predajne.</div>
+    <div class="fld"><label>Názov produktu</label><input type="text" placeholder="napr. Chlieb špaldový"></div>
+    <div class="fld-2"><div class="fld"><label>Gramáž</label><input type="text" placeholder="700g"></div><div class="fld"><label>Cena (€)</label><input type="number" placeholder="2,80"></div></div>
+    <div class="fld"><label>Kategória</label><div class="chips"><button class="chip on">🍞 Chlebová</button><button class="chip">🥐 Sladká</button><button class="chip">🧀 Slané</button></div></div>
+    <div class="fld"><label>Alergény (čísla)</label><div class="chips"><button class="chip chip-sm on">1</button><button class="chip chip-sm">3</button><button class="chip chip-sm">6</button><button class="chip chip-sm">7</button><button class="chip chip-sm">11</button></div></div>
+    <div class="fld"><label>Recept (postup)</label><textarea placeholder="stručný postup výroby…"></textarea></div>
+    <div class="fld"><label>Foto</label><div class="act-row" style="margin-top:0"><button class="act-btn"><i class="ti ti-camera"></i> Odfotiť alebo vybrať</button></div></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-arrow-right"></i> Skontrolovať a pokračovať</button></div>
+    <div class="pozn" data-k="novyprodukt"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech sa dá uložiť rozrobený produkt a dokončiť neskôr"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
-<!-- ============ EXTRA ============ -->
-<div class="scr" id="s-extra">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Pripomienky a návrhy</div><div class="hd-s">Podnety k obrazovke</div></div></div>
+<!-- ============ POTREBUJEM ============ -->
+<div class="scr" id="s-potrebujem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Potrebujem</div><div class="hd-s">Požiadavka na sklad</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Priestor pre podnety, ktoré sa nezmestili inde. Aj drobnosti sú vítané.</div>
-    <div class="pozn" data-k="extra"><div class="pozn-t"><i class="ti ti-pencil"></i> Podnety a návrhy</div><textarea style="min-height:140px" placeholder="napr. čo by ti najviac uľahčilo dennú prácu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Vyberieš čo ti dochádza (obaly, hygiena…), zadáš koľko treba a odošleš požiadavku.</div>
+    <div class="sec-lbl">Obaly</div>
+    <div class="chips"><button class="chip">Vrecká papierové</button><button class="chip on">Krabice na tortu</button><button class="chip">Sáčky na chlieb</button></div>
+    <div class="sec-lbl">Hygiena</div>
+    <div class="chips"><button class="chip">Rukavice</button><button class="chip">Čistiaci sprej</button><button class="chip">Utierky</button></div>
+    <div class="fld-2"><div class="fld"><label>Aktuálny zostatok</label><input type="number" placeholder="0"></div><div class="fld"><label>Požadované množstvo</label><input type="number" placeholder="0"></div></div>
+    <div class="tgl-row"><div class="lbl">Urgentné</div><button class="tgl" data-tgl></button></div>
+    <div class="fld"><label>Poznámka (voliteľná)</label><textarea placeholder="napr. dochádza do konca týždňa"></textarea></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať požiadavku</button></div>
+    <div class="pozn" data-k="potrebujem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím či už požiadavku niekto vybavuje"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PROBLÉM ============ -->
+<div class="scr" id="s-problem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Nahlásiť problém</div><div class="hd-s">Chlebová pekáreň</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Napíš čo sa pokazilo alebo chýba — správa pôjde tomu, kto to rieši.</div>
+    <div class="fld"><label>Popíš problém</label><textarea placeholder="napr. pokazila sa pec, chýba kľúč od skladu…"></textarea></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať</button></div>
+    <div class="pozn" data-k="problem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech môžem priložiť fotku problému"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
@@ -190,19 +244,19 @@
 <script>
   var POZN = {};
   var ROLA = 'chlebová pekáreň — Matej';
-  var LABELS = {vyroba:'Dnešná výroba', nakup:'Nákup (Metro)', ulohy:'Úlohy', extra:'Ďalšie nápady'};
+  var LABELS = {vypek:'Výpek', vyroba:'Výroba (plán)', balenie:'Balenie', prehlad:'Prehľad objednávok', nakup:'Nákup (Metro)', novyprodukt:'Nový produkt', potrebujem:'Potrebujem', problem:'Nahlásiť problém'};
 
   function go(id){ document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');}); var el=document.getElementById('s-'+id); if(el){ el.classList.add('on'); } window.scrollTo(0,0); }
   function home(){ go('home'); refreshCount(); }
   document.addEventListener('click', function(ev){
-    var grp = ev.target.closest('[data-grp]'); if(grp){ toggleGrp(grp); return; }
     var g = ev.target.closest('[data-go]');    if(g){ go(g.getAttribute('data-go')); return; }
     if(ev.target.closest('[data-home]')){ home(); return; }
     if(ev.target.closest('[data-poslat]')){ poslat(); return; }
     var c = ev.target.closest('[data-chk]');   if(c){ toggleChk(c); return; }
+    var t = ev.target.closest('[data-tgl]');   if(t){ t.classList.toggle('on'); return; }
+    var ch = ev.target.closest('.chip');       if(ch){ if(!ch.classList.contains('chip-sm')){ var grp=ch.parentElement; if(ch.previousElementSibling||ch.nextElementSibling){} } ch.classList.toggle('on'); return; }
     var s = ev.target.closest('[data-step]');  if(s){ stepQty(s); return; }
   });
-  function toggleGrp(btn){ var id=btn.getAttribute('data-grp'); var body=document.getElementById(id); var open=btn.classList.contains('open'); btn.classList.toggle('open',!open); if(body) body.classList.toggle('open',!open); }
   function toggleChk(card){ var done=card.classList.toggle('done'); var ic=card.querySelector('.chk i'); if(ic){ ic.className = done ? 'ti ti-circle-check-filled' : 'ti ti-circle'; } }
   function stepQty(btn){ var box=btn.parentElement; var b=box.querySelector('b'); if(!b) return; var n=parseInt(b.textContent,10)||0; n+=parseInt(btn.getAttribute('data-step'),10); if(n<0)n=0; b.textContent=n; }
   function refreshCount(){ var n=0; Object.keys(POZN).forEach(function(k){ if((POZN[k]||'').trim()) n++; }); document.getElementById('poznCount').textContent=n; }

@@ -6,89 +6,113 @@
 <title>ZORA · Vedúci predajne (ukážka)</title>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
 <style>
-  :root{
-    --bg:#F5F0E8; --paper:#FFFFFF; --ink:#1F1B16; --grey:#4D463E; --mut:#857D74;
-    --hair:#E4DDCF; --divider:#DAD4CB; --accent:#E8431A; --accent-soft:#FAE5DD;
-    --ok:#3E7C5A; --ok-soft:#E2EFE7; --warn:#9A6A00; --warn-soft:#FDF0D5;
-  }
+  :root{--bg:#F5F0E8;--paper:#FFFFFF;--ink:#1F1B16;--grey:#4D463E;--mut:#857D74;--hair:#E4DDCF;--divider:#DAD4CB;--accent:#E8431A;--accent-soft:#FAE5DD;--ok:#3E7C5A;--ok-soft:#E2EFE7;--warn:#9A6A00;--warn-soft:#FDF0D5;}
   *{box-sizing:border-box;}
-  button, .rh, .pill, .qty button, .hd-back, .send, .act-btn, .chk-card{cursor:pointer; touch-action:manipulation; -webkit-tap-highlight-color:rgba(232,67,26,0.15); -webkit-user-select:none; user-select:none;}
-  button{-webkit-appearance:none; appearance:none;}
-  html,body{margin:0; padding:0; background:var(--bg); overflow-x:hidden;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif; color:var(--ink); max-width:440px; margin:0 auto; min-height:100vh; position:relative;}
-  .scr{display:none; flex-direction:column; min-height:100vh; padding-bottom:96px;}
+  button,.rh,.qty button,.hd-back,.send,.act-btn,.chk-card,.chip,.filt button,.tgl{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(232,67,26,0.15);-webkit-user-select:none;user-select:none;}
+  button{-webkit-appearance:none;appearance:none;}
+  html,body{margin:0;padding:0;background:var(--bg);overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);max-width:440px;margin:0 auto;min-height:100vh;position:relative;}
+  .scr{display:none;flex-direction:column;min-height:100vh;padding-bottom:96px;}
   .scr.on{display:flex;}
-  .hd{display:flex; align-items:center; gap:12px; padding:18px 16px 14px; background:var(--bg); position:sticky; top:0; z-index:10; border-bottom:1px solid var(--divider);}
-  .hd .ic{width:44px; height:44px; border-radius:12px; background:var(--accent); color:#fff; display:flex; align-items:center; justify-content:center; font-size:24px; flex:none;}
-  .hd-back{width:44px; height:44px; border-radius:12px; background:#EFE9DD; border:none; color:var(--ink); font-size:22px; display:flex; align-items:center; justify-content:center; flex:none;}
-  .hd-t{font-size:17px; font-weight:600; line-height:1.2;}
-  .hd-s{font-size:12px; color:var(--mut); margin-top:1px;}
+  .hd{display:flex;align-items:center;gap:12px;padding:18px 16px 14px;background:var(--bg);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--divider);}
+  .hd .ic{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;}
+  .hd-back{width:44px;height:44px;border-radius:12px;background:#EFE9DD;border:none;color:var(--ink);font-size:22px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hd-t{font-size:17px;font-weight:600;line-height:1.2;}
+  .hd-s{font-size:12px;color:var(--mut);margin-top:1px;}
   .body{padding:14px 16px 0;}
-  .hello{background:var(--accent-soft); border-radius:14px; padding:14px 16px; margin-bottom:14px;}
+  .hello{background:var(--accent-soft);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
   .hello b{color:var(--accent);}
-  .hello p{margin:6px 0 0; font-size:13px; color:var(--grey); line-height:1.5;}
-  .rh{display:flex; align-items:center; gap:13px; background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px; width:100%; text-align:left;}
+  .hello p{margin:6px 0 0;font-size:13px;color:var(--grey);line-height:1.5;}
+  .rh{display:flex;align-items:center;gap:13px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;width:100%;text-align:left;}
   .rh:active{transform:scale(.99);}
-  .rh .ti{font-size:24px; color:var(--accent); flex:none; width:26px; text-align:center;}
-  .rh-tx{flex:1; min-width:0;}
-  .rh-t{font-size:15px; font-weight:600;}
-  .rh-s{font-size:12px; color:var(--mut); margin-top:2px;}
-  .rh-badge{flex:none; font-size:12px; font-weight:600; color:#fff; background:var(--accent); border-radius:20px; padding:3px 10px;}
-  .rh .chev{color:var(--mut); font-size:20px; flex:none;}
-  .grp{display:flex; align-items:center; gap:13px; background:var(--ink); border:1px solid var(--ink); border-radius:12px; padding:15px 14px; margin-bottom:8px; width:100%; text-align:left;}
-  .grp:active{transform:scale(.99);}
-  .grp .ti{font-size:24px; color:#fff; flex:none; width:26px; text-align:center;}
-  .grp .rh-t{color:#fff; font-size:16px;}
-  .grp .rh-s{color:#C9C2B6;}
-  .grp .grp-chev{color:#C9C2B6; font-size:22px; transition:transform .2s;}
-  .grp.open .grp-chev{transform:rotate(180deg);}
-  .grp-body{display:none; padding:2px 0 6px 0; margin-bottom:8px;}
-  .grp-body.open{display:block;}
-  .sub{display:flex; align-items:center; gap:12px; background:var(--paper); border:1px solid var(--hair); border-radius:11px; padding:13px 14px; margin:0 0 7px 14px; width:calc(100% - 14px); text-align:left;}
-  .sub:active{transform:scale(.99);}
-  .sub .ti{font-size:21px; color:var(--accent); flex:none; width:24px; text-align:center;}
-  .sub .rh-t{font-size:14px; font-weight:600;}
-  .sub .rh-s{font-size:11px; color:var(--mut); margin-top:1px;}
-  .sub .chev{color:var(--mut); font-size:18px; flex:none;}
-  .card{background:var(--paper); border:1px solid var(--hair); border-radius:12px; padding:14px; margin-bottom:10px;}
-  .card-row{display:flex; align-items:center; gap:10px;}
-  .card-nazov{flex:1; font-size:15px; font-weight:600; min-width:0;}
-  .card-sub{font-size:12px; color:var(--mut); margin-top:2px;}
-  .qty{display:flex; align-items:center; gap:8px; flex:none;}
-  .qty b{font-size:18px; min-width:30px; text-align:center;}
-  .qty button{width:38px; height:38px; border-radius:9px; border:none; font-size:20px; display:flex; align-items:center; justify-content:center;}
-  .qty .m{background:#EFE9DD; color:var(--ink);}
-  .qty .p{background:var(--accent); color:#fff;}
-  .chk{width:34px; height:34px; flex:none; display:flex; align-items:center; justify-content:center; font-size:28px; color:var(--mut);}
+  .rh .ti{font-size:24px;color:var(--accent);flex:none;width:26px;text-align:center;}
+  .rh-tx{flex:1;min-width:0;}
+  .rh-t{font-size:15px;font-weight:600;}
+  .rh-s{font-size:12px;color:var(--mut);margin-top:2px;}
+  .rh-badge{flex:none;font-size:12px;font-weight:600;color:#fff;background:var(--accent);border-radius:20px;padding:3px 10px;}
+  .rh .chev{color:var(--mut);font-size:20px;flex:none;}
+  .card{background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;}
+  .card-row{display:flex;align-items:center;gap:10px;}
+  .card-nazov{flex:1;font-size:15px;font-weight:600;min-width:0;}
+  .card-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .qty{display:flex;align-items:center;gap:8px;flex:none;}
+  .qty b{font-size:18px;min-width:30px;text-align:center;}
+  .qty button{width:38px;height:38px;border-radius:9px;border:none;font-size:20px;display:flex;align-items:center;justify-content:center;}
+  .qty .m{background:#EFE9DD;color:var(--ink);}
+  .qty .p{background:var(--accent);color:#fff;}
+  .chk{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--mut);}
+  .chk-card.done{opacity:.62;}
+  .chk-card.done .card-nazov{text-decoration:line-through;}
   .chk-card.done .chk{color:var(--ok);}
-  .tag{display:inline-block; font-size:11px; font-weight:700; border-radius:7px; padding:3px 9px; flex:none; text-transform:uppercase; letter-spacing:.03em;}
-  .tag-ok{background:var(--ok-soft); color:var(--ok);}
-  .tag-zmena{background:var(--accent-soft); color:var(--accent);}
-  .tag-sab{background:#EFE9DD; color:var(--mut);}
-  .tag-caka{background:var(--warn-soft); color:var(--warn);}
-  .tag-zam{background:#FBE4E2; color:#C0392B;}
-  .sec-lbl{font-size:12px; font-weight:600; color:var(--mut); text-transform:uppercase; letter-spacing:.04em; margin:16px 0 8px;}
-  .info{font-size:12px; color:var(--grey); background:#EFE9DD; border-radius:10px; padding:10px 12px; margin-bottom:12px; line-height:1.5;}
+  .plan-row{display:flex;align-items:center;gap:10px;}
+  .plan-naz{flex:1;font-size:15px;font-weight:600;}
+  .plan-ks{font-size:18px;font-weight:700;color:var(--accent);}
+  .plan-rozpad{margin-top:8px;border-top:1px solid var(--divider);padding-top:6px;}
+  .pr-line{display:flex;justify-content:space-between;font-size:13px;color:var(--grey);padding:3px 0;}
+  .pr-line span:last-child{font-weight:600;color:var(--ink);}
+  .prow{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+  .prow-tx{flex:1;min-width:0;}
+  .prow-naz{font-size:15px;font-weight:600;}
+  .prow-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:7px;padding:3px 9px;flex:none;text-transform:uppercase;letter-spacing:.03em;}
+  .tag-ok{background:var(--ok-soft);color:var(--ok);}
+  .tag-zmena{background:var(--accent-soft);color:var(--accent);}
+  .tag-sab{background:#EFE9DD;color:var(--mut);}
+  .tag-caka{background:var(--warn-soft);color:var(--warn);}
+  .sec-lbl{font-size:12px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 8px;}
+  .info{font-size:12px;color:var(--grey);background:#EFE9DD;border-radius:10px;padding:10px 12px;margin-bottom:12px;line-height:1.5;}
   .info i.ti{color:var(--accent);}
-  .confirm-box{background:var(--warn-soft); border:1px solid var(--warn); border-radius:11px; padding:11px 13px; margin-top:10px; font-size:12px; color:var(--warn); display:flex; align-items:center; gap:8px;}
-  .confirm-box i.ti{font-size:18px; flex:none;}
-  .act-row{display:flex; gap:8px; margin-top:12px;}
-  .act-btn{flex:1; min-height:46px; border-radius:11px; font-size:14px; font-weight:600; border:1px solid var(--hair); display:flex; align-items:center; justify-content:center; gap:7px;}
-  .act-btn.primary{background:var(--ink); color:#fff; border-color:var(--ink);}
-  .act-btn.accent{background:var(--accent); color:#fff; border-color:var(--accent);}
+  .status-box{border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;}
+  .status-box i.ti{font-size:22px;flex:none;}
+  .sb-ok{background:var(--ok-soft);color:var(--ok);}
+  .sb-warn{background:var(--warn-soft);color:var(--warn);}
+  .pozn-piatok{background:var(--warn-soft);border:1.5px solid var(--warn);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--warn);display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
+  .pozn-piatok i.ti{font-size:20px;flex:none;}
+  .act-row{display:flex;gap:8px;margin-top:12px;}
+  .act-btn{flex:1;min-height:46px;border-radius:11px;font-size:14px;font-weight:600;border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;gap:7px;background:var(--paper);color:var(--ink);}
+  .act-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .act-btn.ghost{background:transparent;color:var(--mut);}
   .fld{margin:14px 0 0;}
-  .fld label{display:block; font-size:13px; font-weight:600; color:var(--grey); margin-bottom:6px;}
-  .fld select, .fld input{width:100%; min-height:48px; padding:0 12px; font-size:15px; border:1px solid var(--hair); border-radius:11px; background:var(--paper); color:var(--ink); font-family:inherit;}
-  .pozn{background:#FFF; border:1.5px dashed var(--accent); border-radius:12px; padding:14px; margin:16px 0 4px;}
-  .pozn-t{font-size:13px; font-weight:600; color:var(--accent); display:flex; align-items:center; gap:7px; margin-bottom:8px;}
-  .pozn textarea{width:100%; border:1px solid var(--hair); border-radius:10px; padding:10px; font-size:14px; font-family:inherit; min-height:70px; resize:vertical; box-sizing:border-box; color:var(--ink);}
-  .pozn .hint{font-size:11px; color:var(--mut); margin-top:6px;}
+  .fld label{display:block;font-size:13px;font-weight:600;color:var(--grey);margin-bottom:6px;}
+  .fld select,.fld input,.fld textarea{width:100%;min-height:48px;padding:12px;font-size:15px;border:1px solid var(--hair);border-radius:11px;background:var(--paper);color:var(--ink);font-family:inherit;}
+  .fld textarea{min-height:120px;resize:vertical;}
+  .fld-2{display:flex;gap:8px;}
+  .fld-2 .fld{flex:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .chip{padding:9px 13px;border:1px solid var(--hair);border-radius:10px;font-size:13px;font-weight:600;background:var(--paper);}
+  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .chip-sm{min-width:42px;text-align:center;padding:9px 0;}
+  .tgl-row{display:flex;align-items:center;gap:12px;margin-top:14px;}
+  .tgl-row .lbl{flex:1;font-size:14px;font-weight:600;}
+  .tgl{position:relative;width:48px;height:28px;background:var(--divider);border-radius:20px;flex:none;transition:.2s;border:none;}
+  .tgl.on{background:var(--accent);}
+  .tgl::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s;}
+  .tgl.on::after{transform:translateX(20px);}
+  .pozn{background:#FFF;border:1.5px dashed var(--accent);border-radius:12px;padding:14px;margin:16px 0 4px;}
+  .pozn-t{font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+  .pozn textarea{width:100%;border:1px solid var(--hair);border-radius:10px;padding:10px;font-size:14px;font-family:inherit;min-height:70px;resize:vertical;box-sizing:border-box;color:var(--ink);}
+  .pozn .hint{font-size:11px;color:var(--mut);margin-top:6px;}
   .pozn.filled{border-color:var(--ok);}
   .pozn.filled .pozn-t{color:var(--ok);}
-  .foot{position:fixed; bottom:0; left:0; right:0; max-width:440px; margin:0 auto; padding:12px 16px calc(12px + env(safe-area-inset-bottom)); background:var(--bg); border-top:1px solid var(--divider);}
-  .send{width:100%; background:var(--accent); color:#fff; border:none; border-radius:12px; padding:15px; font-size:15px; font-weight:600; display:flex; align-items:center; justify-content:center; gap:9px;}
-  .send .n{background:#fff; color:var(--accent); border-radius:20px; font-size:12px; padding:1px 8px; font-weight:700;}
-  .foot-hint{text-align:center; font-size:11px; color:var(--mut); margin-top:7px;}
+  .foot{position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--divider);}
+  .send{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;}
+  .send .n{background:#fff;color:var(--accent);border-radius:20px;font-size:12px;padding:1px 8px;font-weight:700;}
+  .foot-hint{text-align:center;font-size:11px;color:var(--mut);margin-top:7px;}
+  .filt{display:flex;gap:8px;overflow-x:auto;margin-bottom:12px;-webkit-overflow-scrolling:touch;}
+  .filt button{padding:9px 14px;border-radius:20px;border:1px solid var(--hair);background:var(--paper);font-size:13px;font-weight:600;white-space:nowrap;color:var(--ink);}
+  .filt button.on{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .kgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:10px;}
+  .kcard{background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:10px;}
+  .kimg{height:84px;background:#EFE9DD;border-radius:8px;display:flex;align-items:center;justify-content:center;color:var(--mut);font-size:30px;margin-bottom:7px;}
+  .ksku{font-size:10px;color:var(--accent);font-weight:700;}
+  .knaz{font-size:13px;font-weight:600;margin:2px 0 4px;line-height:1.25;}
+  .kgr{font-size:11px;color:var(--mut);}
+  .kcena{font-size:14px;font-weight:700;}
+  .confirm-box{background:var(--warn-soft);border:1px solid var(--warn);border-radius:11px;padding:11px 13px;margin-top:10px;font-size:12px;color:var(--warn);display:flex;align-items:center;gap:8px;}
+  .confirm-box i.ti{font-size:18px;flex:none;}
+  .nav-actions{display:flex;gap:8px;margin-top:10px;}
+  .cutoff{font-size:11px;font-weight:700;border-radius:7px;padding:4px 9px;background:var(--ok-soft);color:var(--ok);margin-left:auto;flex:none;}
 </style>
 </head>
 <body>
@@ -102,105 +126,157 @@
   <div class="body">
     <div class="hello">
       <b>Návrh pracovnej obrazovky</b>
-      <p>Toto je návrh obrazovky vedúceho predajne v systéme ZORA. Prosím prejdite si časti a vyskúšajte ich. Pri každej je pole <b>„Pripomienka k tejto časti"</b> — čo chýba, čo by uľahčilo prácu, čo zmeniť. Na konci sa pripomienky odošlú jedným ťuknutím. Čísla a položky sú ilustračné.</p>
+      <p>Toto je návrh obrazovky vedúceho predajne v systéme ZORA — zodpovedá tomu, čo je reálne nasadené. Prejdite si časti a vyskúšajte ich. Pri každej je pole <b>„Pripomienka"</b>. Na konci sa pošlú jedným ťuknutím. Čísla a položky sú ilustračné.</p>
     </div>
-
-    <button class="rh" data-go="objednavky">
-      <i class="ti ti-clipboard-list"></i>
-      <div class="rh-tx"><div class="rh-t">Objednávky</div><div class="rh-s">Objednať pečivo a kávu</div></div>
-      <i class="ti ti-chevron-right chev"></i>
-    </button>
-
-    <button class="rh" data-go="prijem">
-      <i class="ti ti-clipboard-check"></i>
-      <div class="rh-tx"><div class="rh-t">Príjem</div><div class="rh-s">Potvrdiť čo dnes prišlo</div></div>
-      <span class="rh-badge">1</span><i class="ti ti-chevron-right chev"></i>
-    </button>
-
-    <button class="grp" data-grp="g-sklad">
-      <i class="ti ti-box-seam"></i>
-      <div class="rh-tx"><div class="rh-t">Sklad a tovar</div><div class="rh-s">Nákup (Metro)</div></div>
-      <i class="ti ti-chevron-down chev grp-chev"></i>
-    </button>
-    <div class="grp-body" id="g-sklad">
-      <button class="sub" data-go="nakup"><i class="ti ti-shopping-cart"></i><div class="rh-tx"><div class="rh-t">Nákup (Metro)</div><div class="rh-s">Čo treba kúpiť · pridať a odškrtnúť</div></div><i class="ti ti-chevron-right chev"></i></button>
-    </div>
-
-    <button class="rh" data-go="ulohy">
-      <i class="ti ti-checklist"></i>
-      <div class="rh-tx"><div class="rh-t">Úlohy</div><div class="rh-s">Čo treba spraviť</div></div>
-      <span class="rh-badge">1</span><i class="ti ti-chevron-right chev"></i>
-    </button>
-
-    <button class="rh" data-go="extra" style="margin-top:14px">
-      <i class="ti ti-message-plus"></i>
-      <div class="rh-tx"><div class="rh-t">Pripomienky a návrhy</div><div class="rh-s">Čokoľvek, čo sa nezmestilo inde</div></div>
-      <i class="ti ti-chevron-right chev"></i>
-    </button>
+    <button class="rh" data-go="objednavka"><i class="ti ti-clipboard-list"></i><div class="rh-tx"><div class="rh-t">Objednávka</div><div class="rh-s">Objednať pečivo na deň</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="prijem"><i class="ti ti-clipboard-check"></i><div class="rh-tx"><div class="rh-t">Príjem pečiva</div><div class="rh-s">Potvrdiť čo dnes prišlo</div></div><span class="rh-badge">1</span><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="katalog"><i class="ti ti-book"></i><div class="rh-tx"><div class="rh-t">Katalóg</div><div class="rh-s">Všetky produkty a ceny</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="kava"><i class="ti ti-coffee"></i><div class="rh-tx"><div class="rh-t">Objednať kávu</div><div class="rh-s">Zo Spojky</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="kavamoje"><i class="ti ti-coffee"></i><div class="rh-tx"><div class="rh-t">Moje kávové objednávky</div><div class="rh-s">Stav potvrdenia dátumu</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="ulohy"><i class="ti ti-checklist"></i><div class="rh-tx"><div class="rh-t">Moje úlohy</div><div class="rh-s">Pridelené úlohy</div></div><span class="rh-badge">2</span><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="presun"><i class="ti ti-transfer"></i><div class="rh-tx"><div class="rh-t">Presun do inej predajne</div><div class="rh-s">Poslať tovar inej predajni</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="presunpotvrd"><i class="ti ti-package-import"></i><div class="rh-tx"><div class="rh-t">Presuny — na potvrdenie</div><div class="rh-s">Potvrdiť čo mi prišlo</div></div><span class="rh-badge">1</span><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="potrebujem"><i class="ti ti-basket"></i><div class="rh-tx"><div class="rh-t">Potrebujem</div><div class="rh-s">Požiadavka na sklad</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="problem"><i class="ti ti-alert-triangle"></i><div class="rh-tx"><div class="rh-t">Nahlásiť problém</div><div class="rh-s">Pokazené, chýbajúce…</div></div><i class="ti ti-chevron-right chev"></i></button>
   </div>
 </div>
 
-<!-- ============ OBJEDNÁVKY ============ -->
-<div class="scr" id="s-objednavky">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednávky</div><div class="hd-s">Pečivo a káva</div></div></div>
+<!-- ============ OBJEDNÁVKA ============ -->
+<div class="scr" id="s-objednavka">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div style="flex:1"><div class="hd-t">Objednávka</div><div class="hd-s">Galéria · na zajtra</div></div><span class="cutoff">✓ Do 20:00</span></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Objednáte pečivo na zajtra a kávu zo Spojky. Pri káve navrhnete dátum dodania — Spojka ho potvrdí.</div>
-    <div class="sec-lbl">Pečivo · na zajtra</div>
+    <div class="info"><i class="ti ti-info-circle"></i> Objednávka pečiva na vybraný deň. Uprav množstvá a odošli pred uzávierkou (20:00).</div>
+    <div class="fld"><label>Objednávka pre deň</label><input type="date" value="2026-06-27"></div>
+    <div class="sec-lbl">Chlebová</div>
     <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Chlieb kváskový</div><div class="card-sub">bochník</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>20</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Pšeničný</div><div class="card-sub">bochník</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>10</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="sec-lbl">Slané</div>
     <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Rožok</div><div class="card-sub">ks</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>40</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="sec-lbl">Sladké</div>
     <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Croissant</div><div class="card-sub">ks</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>15</b><button class="p" data-step="1">+</button></div></div></div>
-    <div class="sec-lbl">Káva · Spojka</div>
-    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">KAVEYO espresso · 1 kg</div><div class="card-sub">tmavé praženie</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>2</b><button class="p" data-step="1">+</button></div></div></div>
-    <div class="fld"><label>Navrhni dátum dodania kávy</label><input type="date" value="2026-06-27"></div>
-    <div class="confirm-box"><i class="ti ti-clock-hour-4"></i> Po odoslaní: <b>čaká na potvrdenie Spojky</b> (Spojka dátum potvrdí alebo navrhne iný).</div>
-    <div class="act-row"><button class="act-btn accent"><i class="ti ti-send"></i> Odoslať objednávku</button></div>
-    <div class="pozn" data-k="objednavky"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech si pamätá moju obvyklú objednávku ako šablónu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať objednávku</button></div>
+    <div class="pozn" data-k="objednavka"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech si pamätá obvyklú objednávku ako šablónu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
 <!-- ============ PRÍJEM ============ -->
 <div class="scr" id="s-prijem">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Príjem</div><div class="hd-s">Potvrdiť čo dnes prišlo</div></div></div>
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Príjem pečiva</div><div class="hd-s">Galéria · Štvrtok 26. júna</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Skontrolujte, či dodané sedí s objednaným. Pri nesúlade sa položka označí červeným — doplňte koľko reálne prišlo.</div>
+    <div class="info"><i class="ti ti-info-circle"></i> Skontrolujte, či dodané sedí s objednaným. Pri nesúlade sa položka označí červeným.</div>
     <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Chlieb kváskový</div><div class="card-sub">objednané 20 · dorazilo 20</div></div><span class="tag tag-ok">Sedí</span></div></div>
-    <div class="card" style="border-color:#E3B5B0"><div class="card-row"><div style="flex:1"><div class="card-nazov">Rožky</div><div class="card-sub" style="color:#C0392B">objednané 40 · dorazilo 38</div></div><span class="tag tag-zam">Nesedí −2</span></div></div>
+    <div class="card" style="border-color:#E3B5B0"><div class="card-row"><div style="flex:1"><div class="card-nazov">Rožky</div><div class="card-sub" style="color:#C0392B">objednané 40 · dorazilo 38</div></div><span class="tag" style="background:#FBE4E2;color:#C0392B">Nesedí −2</span></div></div>
     <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Croissant</div><div class="card-sub">objednané 15 · dorazilo 15</div></div><span class="tag tag-ok">Sedí</span></div></div>
     <div class="act-row"><button class="act-btn primary"><i class="ti ti-check"></i> Potvrdiť príjem</button></div>
     <div class="pozn" data-k="prijem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech sa nesúlad automaticky pošle Natálii"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
-<!-- ============ NÁKUP (METRO) ============ -->
-<div class="scr" id="s-nakup">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Nákup (Metro)</div><div class="hd-s">Čo treba kúpiť</div></div></div>
+<!-- ============ KATALÓG ============ -->
+<div class="scr" id="s-katalog">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Katalóg</div><div class="hd-s">47 produktov</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Zdieľaný zoznam, čo treba kúpiť pre predajňu. Pridáte položku, nákupca v Metre ju odškrtne.</div>
-    <div class="fld"><label>Pridať položku</label><input type="text" placeholder="názov (napr. Servítky)"></div>
-    <div class="act-row"><button class="act-btn accent"><i class="ti ti-plus"></i> Pridať položku</button></div>
-    <div class="sec-lbl">Potrebné</div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Tašky papierové</div><div class="card-sub">200 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Čistiaci prostriedok</div><div class="card-sub">5 l</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="pozn" data-k="nakup"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím kto a kedy položku kúpil"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="filt"><button class="on">Všetko</button><button>Chlebové</button><button>Slané</button><button>Sladké</button></div>
+    <div class="sec-lbl">Chlebová</div>
+    <div class="kgrid">
+      <div class="kcard"><div class="kimg"><i class="ti ti-bread"></i></div><div class="ksku">CHLIEB-001</div><div class="knaz">Chlieb kváskový</div><div class="kgr">700 g</div><div class="kcena">2,50 €</div></div>
+      <div class="kcard"><div class="kimg"><i class="ti ti-bread"></i></div><div class="ksku">CHLIEB-004</div><div class="knaz">Pšeničný</div><div class="kgr">500 g</div><div class="kcena">1,90 €</div></div>
+    </div>
+    <div class="sec-lbl">Sladké</div>
+    <div class="kgrid">
+      <div class="kcard"><div class="kimg"><i class="ti ti-croissant"></i></div><div class="ksku">SLAD-002</div><div class="knaz">Croissant maslový</div><div class="kgr">80 g</div><div class="kcena">1,80 €</div></div>
+      <div class="kcard"><div class="kimg"><i class="ti ti-cake"></i></div><div class="ksku">SLAD-007</div><div class="knaz">Koláč tvarohový</div><div class="kgr">120 g</div><div class="kcena">2,20 €</div></div>
+    </div>
+    <div class="pozn" data-k="katalog"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech viem rovno z katalógu pridať do objednávky"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
-<!-- ============ ÚLOHY ============ -->
+<!-- ============ OBJEDNAŤ KÁVU ============ -->
+<div class="scr" id="s-kava">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Objednať kávu</div><div class="hd-s">Zo Spojky · Galéria</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Objednáte kávu zo Spojky. Navrhnete dátum dodania — Spojka ho potvrdí.</div>
+    <div class="sec-lbl">KAVEYO espresso · tmavé</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Sáčok · 1 kg</div><div class="card-sub">22,00 €</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>2</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Sáčok · 250 g</div><div class="card-sub">6,50 €</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>0</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="fld"><label>Navrhni dátum dodania</label><input type="date" value="2026-06-30"></div>
+    <div class="confirm-box"><i class="ti ti-clock-hour-4"></i> Po odoslaní: <b>čaká na potvrdenie Spojky</b>.</div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-coffee"></i> Objednať kávu</button></div>
+    <div class="pozn" data-k="kava"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím spotrebu kávy za mesiac"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ MOJE KÁVOVÉ OBJEDNÁVKY ============ -->
+<div class="scr" id="s-kavamoje">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Moje kávové objednávky</div><div class="hd-s">Stav potvrdenia dátumu</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Stav tvojich kávových objednávok — či Spojka potvrdila dátum dodania.</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Objednávka 30. 6.</div><div class="card-sub">2 ks · 1 položka · navrhnuté</div></div><span class="tag tag-caka">Čaká</span></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Objednávka 20. 6.</div><div class="card-sub">3 ks · 2 položky</div></div><span class="tag tag-ok">Potvrdené</span></div></div>
+    <div class="pozn" data-k="kavamoje"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech mi príde upozornenie keď Spojka potvrdí"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ MOJE ÚLOHY ============ -->
 <div class="scr" id="s-ulohy">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Úlohy</div><div class="hd-s">Čo treba spraviť</div></div></div>
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Moje úlohy</div><div class="hd-s">Pridelené úlohy</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Úlohy pre teba. Ťuknutím odškrtneš hotovú.</div>
-    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Spočítať pokladňu</div><div class="card-sub">dnes · po zatvorení</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
-    <div class="pozn" data-k="ulohy"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech mi príde upozornenie na novú úlohu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Úlohy, ktoré ti niekto pridelil. Ťuknutím odškrtneš hotovú.</div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Doplniť kávu do regálu</div><div class="card-sub">od Natálie · dnes</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Spočítať pokladňu</div><div class="card-sub">od Natálie · dnes</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="pozn" data-k="ulohy"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím kto a kedy úlohu zadal"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
-<!-- ============ EXTRA ============ -->
-<div class="scr" id="s-extra">
-  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Pripomienky a návrhy</div><div class="hd-s">Podnety k obrazovke</div></div></div>
+<!-- ============ PRESUN DO INEJ ============ -->
+<div class="scr" id="s-presun">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Presun do inej predajne</div><div class="hd-s">Poslať tovar inej predajni</div></div></div>
   <div class="body">
-    <div class="info"><i class="ti ti-info-circle"></i> Priestor pre podnety, ktoré sa nezmestili inde. Aj drobnosti sú vítané.</div>
-    <div class="pozn" data-k="extra"><div class="pozn-t"><i class="ti ti-pencil"></i> Podnety a návrhy</div><textarea style="min-height:140px" placeholder="napr. čo by vám najviac uľahčilo dennú prácu"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+    <div class="info"><i class="ti ti-info-circle"></i> Keď máš niečoho navyše, pošli to inej predajni. Cieľová predajňa príjem potvrdí.</div>
+    <div class="fld"><label>Cieľová predajňa</label><select><option>17. novembra</option><option>OC Max</option><option>Masarykova</option></select></div>
+    <div class="fld"><label>Dôvod (voliteľné)</label><input type="text" placeholder="napr. zvyšné pečivo"></div>
+    <div class="sec-lbl">Čo presúvaš</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Chlieb kváskový</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>6</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">Croissant</div></div><div class="qty"><button class="m" data-step="-1">−</button><b>0</b><button class="p" data-step="1">+</button></div></div></div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-transfer"></i> Odoslať presun</button></div>
+    <div class="pozn" data-k="presun"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech sa dá presúvať aj večer pri zatváraní"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PRESUNY — NA POTVRDENIE ============ -->
+<div class="scr" id="s-presunpotvrd">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Presuny — na potvrdenie</div><div class="hd-s">Potvrď príjem tovaru</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Tovar, ktorý ti poslala iná predajňa. Po prevzatí ťukni „Potvrdiť príjem".</div>
+    <div class="card"><div class="card-row"><div style="flex:1"><div class="card-nazov">OC Max → Galéria</div><div class="card-sub">8 ks · 2 položky · zvyšné pečivo · 18:00</div></div></div><div class="act-row"><button class="act-btn primary" data-doruc><i class="ti ti-check"></i> Potvrdiť príjem</button></div></div>
+    <div class="pozn" data-k="presunpotvrd"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech viem upraviť počet ak prišlo menej"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ POTREBUJEM ============ -->
+<div class="scr" id="s-potrebujem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Potrebujem</div><div class="hd-s">Požiadavka na sklad</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Vyberieš čo ti dochádza, zadáš koľko treba a odošleš požiadavku.</div>
+    <div class="sec-lbl">Obaly</div>
+    <div class="chips"><button class="chip on">Tašky papierové</button><button class="chip">Sáčky na chlieb</button></div>
+    <div class="sec-lbl">Hygiena</div>
+    <div class="chips"><button class="chip">Rukavice</button><button class="chip">Čistiaci sprej</button></div>
+    <div class="fld-2"><div class="fld"><label>Aktuálny zostatok</label><input type="number" placeholder="0"></div><div class="fld"><label>Požadované množstvo</label><input type="number" placeholder="0"></div></div>
+    <div class="tgl-row"><div class="lbl">Urgentné</div><button class="tgl" data-tgl></button></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať požiadavku</button></div>
+    <div class="pozn" data-k="potrebujem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím či už požiadavku niekto vybavuje"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PROBLÉM ============ -->
+<div class="scr" id="s-problem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Nahlásiť problém</div><div class="hd-s">Galéria</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Napíš čo sa pokazilo alebo chýba — správa pôjde tomu, kto to rieši.</div>
+    <div class="fld"><label>Popíš problém</label><textarea placeholder="napr. pokazila sa kasa, chýba kľúč…"></textarea></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať</button></div>
+    <div class="pozn" data-k="problem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech môžem priložiť fotku problému"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
   </div>
 </div>
 
@@ -212,19 +288,20 @@
 <script>
   var POZN = {};
   var ROLA = 'vedúci predajne';
-  var LABELS = {objednavky:'Objednávky', prijem:'Príjem', nakup:'Nákup (Metro)', ulohy:'Úlohy', extra:'Ďalšie nápady'};
-
+  var LABELS = {objednavka:'Objednávka', prijem:'Príjem pečiva', katalog:'Katalóg', kava:'Objednať kávu', kavamoje:'Moje kávové objednávky', ulohy:'Moje úlohy', presun:'Presun do inej predajne', presunpotvrd:'Presuny — na potvrdenie', potrebujem:'Potrebujem', problem:'Nahlásiť problém'};
   function go(id){ document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');}); var el=document.getElementById('s-'+id); if(el){ el.classList.add('on'); } window.scrollTo(0,0); }
   function home(){ go('home'); refreshCount(); }
   document.addEventListener('click', function(ev){
-    var grp = ev.target.closest('[data-grp]'); if(grp){ toggleGrp(grp); return; }
     var g = ev.target.closest('[data-go]');    if(g){ go(g.getAttribute('data-go')); return; }
     if(ev.target.closest('[data-home]')){ home(); return; }
     if(ev.target.closest('[data-poslat]')){ poslat(); return; }
+    var d = ev.target.closest('[data-doruc]'); if(d){ d.classList.remove('primary'); d.style.background='var(--ok-soft)'; d.style.color='var(--ok)'; d.style.borderColor='var(--ok-soft)'; d.innerHTML='<i class="ti ti-check"></i> Potvrdené ✓'; return; }
     var c = ev.target.closest('[data-chk]');   if(c){ toggleChk(c); return; }
+    var t = ev.target.closest('[data-tgl]');   if(t){ t.classList.toggle('on'); return; }
+    var f = ev.target.closest('.filt button');  if(f){ f.parentElement.querySelectorAll('button').forEach(function(b){b.classList.remove('on');}); f.classList.add('on'); return; }
+    var ch = ev.target.closest('.chip');       if(ch){ ch.classList.toggle('on'); return; }
     var s = ev.target.closest('[data-step]');  if(s){ stepQty(s); return; }
   });
-  function toggleGrp(btn){ var id=btn.getAttribute('data-grp'); var body=document.getElementById(id); var open=btn.classList.contains('open'); btn.classList.toggle('open',!open); if(body) body.classList.toggle('open',!open); }
   function toggleChk(card){ var done=card.classList.toggle('done'); var ic=card.querySelector('.chk i'); if(ic){ ic.className = done ? 'ti ti-circle-check-filled' : 'ti ti-circle'; } }
   function stepQty(btn){ var box=btn.parentElement; var b=box.querySelector('b'); if(!b) return; var n=parseInt(b.textContent,10)||0; n+=parseInt(btn.getAttribute('data-step'),10); if(n<0)n=0; b.textContent=n; }
   function refreshCount(){ var n=0; Object.keys(POZN).forEach(function(k){ if((POZN[k]||'').trim()) n++; }); document.getElementById('poznCount').textContent=n; }
