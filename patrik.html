@@ -192,5 +192,7 @@
   function copyFallback(text){ if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ alert('Pripomienky skopírované. Vložte ich do správy a odošlite.'); }, function(){ prompt('Skopírujte tento text a odošlite ho:', text); }); } else { prompt('Skopírujte tento text a odošlite ho:', text); } }
   refreshCount();
 </script>
+<script>window.PRIPOMIENKY_ROLA="Patrik · Šofér";</script>
+<script src="pripomienky.js"></script>
 </body>
 </html>
