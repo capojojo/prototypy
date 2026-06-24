@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="sk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ZORA · Lahôdky — Valér (ukážka)</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tabler-icons/2.47.0/iconfont/tabler-icons.min.css">
+<style>
+  :root{--bg:#F5F0E8;--paper:#FFFFFF;--ink:#1F1B16;--grey:#4D463E;--mut:#857D74;--hair:#E4DDCF;--divider:#DAD4CB;--accent:#E8431A;--accent-soft:#FAE5DD;--ok:#3E7C5A;--ok-soft:#E2EFE7;--warn:#9A6A00;--warn-soft:#FDF0D5;}
+  *{box-sizing:border-box;}
+  button,.rh,.qty button,.hd-back,.send,.act-btn,.chk-card,.chip,.filt button,.tgl{cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:rgba(232,67,26,0.15);-webkit-user-select:none;user-select:none;}
+  button{-webkit-appearance:none;appearance:none;}
+  html,body{margin:0;padding:0;background:var(--bg);overflow-x:hidden;}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:var(--ink);max-width:440px;margin:0 auto;min-height:100vh;position:relative;}
+  .scr{display:none;flex-direction:column;min-height:100vh;padding-bottom:96px;}
+  .scr.on{display:flex;}
+  .hd{display:flex;align-items:center;gap:12px;padding:18px 16px 14px;background:var(--bg);position:sticky;top:0;z-index:10;border-bottom:1px solid var(--divider);}
+  .hd .ic{width:44px;height:44px;border-radius:12px;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:24px;flex:none;}
+  .hd-back{width:44px;height:44px;border-radius:12px;background:#EFE9DD;border:none;color:var(--ink);font-size:22px;display:flex;align-items:center;justify-content:center;flex:none;}
+  .hd-t{font-size:17px;font-weight:600;line-height:1.2;}
+  .hd-s{font-size:12px;color:var(--mut);margin-top:1px;}
+  .body{padding:14px 16px 0;}
+  .hello{background:var(--accent-soft);border-radius:14px;padding:14px 16px;margin-bottom:14px;}
+  .hello b{color:var(--accent);}
+  .hello p{margin:6px 0 0;font-size:13px;color:var(--grey);line-height:1.5;}
+  .rh{display:flex;align-items:center;gap:13px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;width:100%;text-align:left;}
+  .rh:active{transform:scale(.99);}
+  .rh .ti{font-size:24px;color:var(--accent);flex:none;width:26px;text-align:center;}
+  .rh-tx{flex:1;min-width:0;}
+  .rh-t{font-size:15px;font-weight:600;}
+  .rh-s{font-size:12px;color:var(--mut);margin-top:2px;}
+  .rh-badge{flex:none;font-size:12px;font-weight:600;color:#fff;background:var(--accent);border-radius:20px;padding:3px 10px;}
+  .rh .chev{color:var(--mut);font-size:20px;flex:none;}
+  .card{background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:14px;margin-bottom:10px;}
+  .card-row{display:flex;align-items:center;gap:10px;}
+  .card-nazov{flex:1;font-size:15px;font-weight:600;min-width:0;}
+  .card-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .qty{display:flex;align-items:center;gap:8px;flex:none;}
+  .qty b{font-size:18px;min-width:30px;text-align:center;}
+  .qty button{width:38px;height:38px;border-radius:9px;border:none;font-size:20px;display:flex;align-items:center;justify-content:center;}
+  .qty .m{background:#EFE9DD;color:var(--ink);}
+  .qty .p{background:var(--accent);color:#fff;}
+  .chk{width:34px;height:34px;flex:none;display:flex;align-items:center;justify-content:center;font-size:28px;color:var(--mut);}
+  .chk-card.done{opacity:.62;}
+  .chk-card.done .card-nazov{text-decoration:line-through;}
+  .chk-card.done .chk{color:var(--ok);}
+  .plan-row{display:flex;align-items:center;gap:10px;}
+  .plan-naz{flex:1;font-size:15px;font-weight:600;}
+  .plan-ks{font-size:18px;font-weight:700;color:var(--accent);}
+  .plan-rozpad{margin-top:8px;border-top:1px solid var(--divider);padding-top:6px;}
+  .pr-line{display:flex;justify-content:space-between;font-size:13px;color:var(--grey);padding:3px 0;}
+  .pr-line span:last-child{font-weight:600;color:var(--ink);}
+  .prow{display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--hair);border-radius:12px;padding:13px 14px;margin-bottom:8px;}
+  .prow-tx{flex:1;min-width:0;}
+  .prow-naz{font-size:15px;font-weight:600;}
+  .prow-sub{font-size:12px;color:var(--mut);margin-top:2px;}
+  .tag{display:inline-block;font-size:11px;font-weight:700;border-radius:7px;padding:3px 9px;flex:none;text-transform:uppercase;letter-spacing:.03em;}
+  .tag-ok{background:var(--ok-soft);color:var(--ok);}
+  .tag-zmena{background:var(--accent-soft);color:var(--accent);}
+  .tag-sab{background:#EFE9DD;color:var(--mut);}
+  .tag-caka{background:var(--warn-soft);color:var(--warn);}
+  .sec-lbl{font-size:12px;font-weight:600;color:var(--mut);text-transform:uppercase;letter-spacing:.04em;margin:16px 0 8px;}
+  .info{font-size:12px;color:var(--grey);background:#EFE9DD;border-radius:10px;padding:10px 12px;margin-bottom:12px;line-height:1.5;}
+  .info i.ti{color:var(--accent);}
+  .status-box{border-radius:12px;padding:14px;margin-bottom:12px;display:flex;align-items:flex-start;gap:10px;font-size:13px;line-height:1.5;}
+  .status-box i.ti{font-size:22px;flex:none;}
+  .sb-ok{background:var(--ok-soft);color:var(--ok);}
+  .sb-warn{background:var(--warn-soft);color:var(--warn);}
+  .pozn-piatok{background:var(--warn-soft);border:1.5px solid var(--warn);border-radius:12px;padding:12px 14px;margin-bottom:12px;font-size:13px;color:var(--warn);display:flex;align-items:flex-start;gap:9px;line-height:1.5;}
+  .pozn-piatok i.ti{font-size:20px;flex:none;}
+  .act-row{display:flex;gap:8px;margin-top:12px;}
+  .act-btn{flex:1;min-height:46px;border-radius:11px;font-size:14px;font-weight:600;border:1px solid var(--hair);display:flex;align-items:center;justify-content:center;gap:7px;background:var(--paper);color:var(--ink);}
+  .act-btn.primary{background:var(--ink);color:#fff;border-color:var(--ink);}
+  .act-btn.accent{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .act-btn.ghost{background:transparent;color:var(--mut);}
+  .fld{margin:14px 0 0;}
+  .fld label{display:block;font-size:13px;font-weight:600;color:var(--grey);margin-bottom:6px;}
+  .fld select,.fld input,.fld textarea{width:100%;min-height:48px;padding:12px;font-size:15px;border:1px solid var(--hair);border-radius:11px;background:var(--paper);color:var(--ink);font-family:inherit;}
+  .fld textarea{min-height:120px;resize:vertical;}
+  .fld-2{display:flex;gap:8px;}
+  .fld-2 .fld{flex:1;}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:6px;}
+  .chip{padding:9px 13px;border:1px solid var(--hair);border-radius:10px;font-size:13px;font-weight:600;background:var(--paper);}
+  .chip.on{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .chip-sm{min-width:42px;text-align:center;padding:9px 0;}
+  .tgl-row{display:flex;align-items:center;gap:12px;margin-top:14px;}
+  .tgl-row .lbl{flex:1;font-size:14px;font-weight:600;}
+  .tgl{position:relative;width:48px;height:28px;background:var(--divider);border-radius:20px;flex:none;transition:.2s;border:none;}
+  .tgl.on{background:var(--accent);}
+  .tgl::after{content:'';position:absolute;top:3px;left:3px;width:22px;height:22px;background:#fff;border-radius:50%;transition:.2s;}
+  .tgl.on::after{transform:translateX(20px);}
+  .pozn{background:#FFF;border:1.5px dashed var(--accent);border-radius:12px;padding:14px;margin:16px 0 4px;}
+  .pozn-t{font-size:13px;font-weight:600;color:var(--accent);display:flex;align-items:center;gap:7px;margin-bottom:8px;}
+  .pozn textarea{width:100%;border:1px solid var(--hair);border-radius:10px;padding:10px;font-size:14px;font-family:inherit;min-height:70px;resize:vertical;box-sizing:border-box;color:var(--ink);}
+  .pozn .hint{font-size:11px;color:var(--mut);margin-top:6px;}
+  .pozn.filled{border-color:var(--ok);}
+  .pozn.filled .pozn-t{color:var(--ok);}
+  .foot{position:fixed;bottom:0;left:0;right:0;max-width:440px;margin:0 auto;padding:12px 16px calc(12px + env(safe-area-inset-bottom));background:var(--bg);border-top:1px solid var(--divider);}
+  .send{width:100%;background:var(--accent);color:#fff;border:none;border-radius:12px;padding:15px;font-size:15px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:9px;}
+  .send .n{background:#fff;color:var(--accent);border-radius:20px;font-size:12px;padding:1px 8px;font-weight:700;}
+  .foot-hint{text-align:center;font-size:11px;color:var(--mut);margin-top:7px;}
+</style>
+</head>
+<body>
+
+<!-- ============ HOME ============ -->
+<div class="scr on" id="s-home">
+  <div class="hd">
+    <div class="ic"><i class="ti ti-salad"></i></div>
+    <div><div class="hd-t">Lahôdky · Valér</div><div class="hd-s">Návrh pracovnej obrazovky</div></div>
+  </div>
+  <div class="body">
+    <div class="hello">
+      <b>Návrh pracovnej obrazovky</b>
+      <p>Toto je návrh tvojej obrazovky v systéme ZORA — zodpovedá tomu, čo máš reálne nasadené. Prejdi si časti a vyskúšaj ich. Pri každej je pole <b>„Pripomienka"</b>. Na konci sa pošlú jedným ťuknutím. Čísla a položky sú ilustračné.</p>
+    </div>
+    <button class="rh" data-go="vyroba"><i class="ti ti-tools-kitchen-2"></i><div class="rh-tx"><div class="rh-t">Výroba lahôdok</div><div class="rh-s">Čo vyrobiť · potvrdiť zabalené</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="prehlad"><i class="ti ti-chart-bar"></i><div class="rh-tx"><div class="rh-t">Prehľad</div><div class="rh-s">Objednávky lahôdok po predajniach</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="nakup"><i class="ti ti-shopping-cart"></i><div class="rh-tx"><div class="rh-t">Nákup (Metro)</div><div class="rh-s">Suroviny · čo treba kúpiť</div></div><i class="ti ti-chevron-right chev"></i></button>
+    <button class="rh" data-go="potrebujem"><i class="ti ti-basket"></i><div class="rh-tx"><div class="rh-t">Potrebujem</div><div class="rh-s">Požiadavka na obaly/hygienu</div></div><i class="ti ti-chevron-right chev"></i></button>
+  </div>
+</div>
+
+<!-- ============ VÝROBA LAHÔDOK ============ -->
+<div class="scr" id="s-vyroba">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Výroba lahôdok</div><div class="hd-s">Valér · Štvrtok 26. júna</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Výrobné dni lahôdok sú utorok a piatok. Odškrtni čo je zabalené a potvrď výrobu. Korekciu reálnych množstiev spravíš cez „Korekcie balenia".</div>
+    <div class="act-row"><button class="act-btn"><i class="ti ti-edit"></i> Korekcie balenia</button></div>
+    <div class="sec-lbl">Čo vyrobiť — na štvrtok (42 ks)</div>
+    <div class="sec-lbl" style="margin:10px 0 6px">Šaláty · 26 ks</div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Caesar šalát</div><div class="card-sub">12 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Cestovinový šalát</div><div class="card-sub">8 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Grécky šalát</div><div class="card-sub">6 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="sec-lbl" style="margin:14px 0 6px">Cestoviny · 16 ks</div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Bolognese</div><div class="card-sub">10 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Carbonara</div><div class="card-sub">6 ks</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-checkbox"></i> Potvrdiť výrobu (zabalené)</button></div>
+    <div class="pozn" data-k="vyroba"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech viem zadať aj reálne vyrobené množstvo ak sa líši"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ PREHĽAD ============ -->
+<div class="scr" id="s-prehlad">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Prehľad</div><div class="hd-s">Lahôdky · všetky predajne</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Čo si predajne objednali z lahôdok (šaláty, cestoviny) — za všetky predajne.</div>
+    <div class="sec-lbl">Prešov</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">17. novembra</div><div class="prow-sub">Šaláty 12 · cestoviny 8</div></div><span class="tag tag-ok">Odoslané</span></div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Galéria</div><div class="prow-sub">Šaláty 6 · cestoviny 4</div></div><span class="tag tag-zmena">Zmena</span></div>
+    <div class="sec-lbl">Košice</div>
+    <div class="prow"><div class="prow-tx"><div class="prow-naz">Masarykova</div><div class="prow-sub">Šaláty 9 · cestoviny 5</div></div><span class="tag tag-sab">Šablóna</span></div>
+    <div class="pozn" data-k="prehlad"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím súčet po druhoch šalátov"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ NÁKUP (METRO) ============ -->
+<div class="scr" id="s-nakup">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Nákup (Metro)</div><div class="hd-s">Suroviny — lahôdky</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Zdieľaný zoznam surovín, čo treba kúpiť. Pridáš položku, nákupca v Metre ju odškrtne.</div>
+    <div class="fld"><label>Pridať položku</label><input type="text" placeholder="názov (napr. Paradajky)"></div>
+    <div class="act-row"><button class="act-btn accent"><i class="ti ti-plus"></i> Pridať položku</button></div>
+    <div class="sec-lbl">Potrebné</div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Kuracie prsia</div><div class="card-sub">8 kg</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Cestoviny penne</div><div class="card-sub">10 kg</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="card chk-card" data-chk><div class="card-row"><div style="flex:1"><div class="card-nazov">Olivový olej</div><div class="card-sub">5 l</div></div><div class="chk"><i class="ti ti-circle"></i></div></div></div>
+    <div class="pozn" data-k="nakup"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím kto a kedy položku kúpil"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<!-- ============ POTREBUJEM ============ -->
+<div class="scr" id="s-potrebujem">
+  <div class="hd"><button class="hd-back" data-home="1">←</button><div><div class="hd-t">Potrebujem</div><div class="hd-s">Požiadavka na sklad</div></div></div>
+  <div class="body">
+    <div class="info"><i class="ti ti-info-circle"></i> Vyberieš čo ti dochádza (obaly, hygiena…), zadáš koľko treba a odošleš požiadavku.</div>
+    <div class="sec-lbl">Obaly</div>
+    <div class="chips"><button class="chip on">Kelímky na šaláty 500ml</button><button class="chip">Viečka</button><button class="chip">Boxy na cestoviny</button></div>
+    <div class="sec-lbl">Etikety a hygiena</div>
+    <div class="chips"><button class="chip">Etikety so zložením</button><button class="chip">Rukavice</button></div>
+    <div class="fld-2"><div class="fld"><label>Aktuálny zostatok</label><input type="number" placeholder="0"></div><div class="fld"><label>Požadované množstvo</label><input type="number" placeholder="0"></div></div>
+    <div class="tgl-row"><div class="lbl">Urgentné</div><button class="tgl" data-tgl></button></div>
+    <div class="fld"><label>Poznámka (voliteľná)</label><textarea placeholder="napr. dochádza do utorka"></textarea></div>
+    <div class="act-row"><button class="act-btn primary"><i class="ti ti-send"></i> Odoslať požiadavku</button></div>
+    <div class="pozn" data-k="potrebujem"><div class="pozn-t"><i class="ti ti-pencil"></i> Pripomienka k tejto časti</div><textarea placeholder="napr. nech vidím či už požiadavku niekto vybavuje"></textarea><div class="hint">Stačí stručne, vlastnými slovami.</div></div>
+  </div>
+</div>
+
+<div class="foot">
+  <button class="send" data-poslat="1"><i class="ti ti-send"></i> Odoslať pripomienky <span class="n" id="poznCount">0</span></button>
+  <div class="foot-hint">Pripomienky sa pošlú jedným ťuknutím (alebo skopírujú).</div>
+</div>
+
+<script>
+  var POZN = {};
+  var ROLA = 'lahôdky — Valér';
+  var LABELS = {vyroba:'Výroba lahôdok', prehlad:'Prehľad', nakup:'Nákup (Metro)', potrebujem:'Potrebujem'};
+  function go(id){ document.querySelectorAll('.scr').forEach(function(s){s.classList.remove('on');}); var el=document.getElementById('s-'+id); if(el){ el.classList.add('on'); } window.scrollTo(0,0); }
+  function home(){ go('home'); refreshCount(); }
+  document.addEventListener('click', function(ev){
+    var g = ev.target.closest('[data-go]');    if(g){ go(g.getAttribute('data-go')); return; }
+    if(ev.target.closest('[data-home]')){ home(); return; }
+    if(ev.target.closest('[data-poslat]')){ poslat(); return; }
+    var c = ev.target.closest('[data-chk]');   if(c){ toggleChk(c); return; }
+    var t = ev.target.closest('[data-tgl]');   if(t){ t.classList.toggle('on'); return; }
+    var ch = ev.target.closest('.chip');       if(ch){ ch.classList.toggle('on'); return; }
+  });
+  function toggleChk(card){ var done=card.classList.toggle('done'); var ic=card.querySelector('.chk i'); if(ic){ ic.className = done ? 'ti ti-circle-check-filled' : 'ti ti-circle'; } }
+  function refreshCount(){ var n=0; Object.keys(POZN).forEach(function(k){ if((POZN[k]||'').trim()) n++; }); document.getElementById('poznCount').textContent=n; }
+  document.querySelectorAll('.pozn').forEach(function(p){ var k=p.getAttribute('data-k'); var ta=p.querySelector('textarea'); ta.addEventListener('input', function(){ POZN[k]=ta.value; p.classList.toggle('filled', !!ta.value.trim()); }); });
+  function poslat(){ var parts=['ZORA — pripomienky ('+ROLA+'):','']; var any=false; Object.keys(LABELS).forEach(function(k){ if((POZN[k]||'').trim()){ any=true; parts.push('• '+LABELS[k]+':'); parts.push('  '+POZN[k].trim()); parts.push(''); } }); if(!any){ alert('Zatiaľ neboli zadané žiadne pripomienky.'); return; } var text=parts.join('\n'); if(navigator.share){ navigator.share({title:'ZORA — pripomienky', text:text}).catch(function(){ copyFallback(text); }); } else { copyFallback(text); } }
+  function copyFallback(text){ if(navigator.clipboard){ navigator.clipboard.writeText(text).then(function(){ alert('Pripomienky skopírované. Vložte ich do správy a odošlite.'); }, function(){ prompt('Skopírujte tento text a odošlite ho:', text); }); } else { prompt('Skopírujte tento text a odošlite ho:', text); } }
+  refreshCount();
+</script>
+</body>
+</html>
