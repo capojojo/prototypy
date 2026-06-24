@@ -3,6 +3,7 @@
    In-memory (žiadny localStorage — WhatsApp browser ho blokuje). Pravidlo 9: žiadne tel./email v kóde. */
 (function(){
   var ROLA = window.PRIPOMIENKY_ROLA || 'ZORA prototyp';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzXirzxszMV96AVpdxBlU8lG6TVTy-1vR335CN12tM39tMomkfxrC-0eceWwCyNrtRTvA/exec';
   var pins = [];      // {scr, cislo, pozn, x, y, el}
   var zap = false;
   var seq = 0;
@@ -80,6 +81,7 @@
     else if(act==='zmaz'){ zmazPin(editPin); zavri(); }
     else if(act==='wa'){ window.open('https://wa.me/?text='+encodeURIComponent(b.getAttribute('data-text')||''),'_blank'); poslane=true; }
     else if(act==='kopi'){ kopiruj(b.getAttribute('data-text')||''); }
+    else if(act==='harok'){ zapisDoHarka(b); }
     else if(act==='zavri'){ zavri(); }
   });
   function zavri(){ back.classList.remove('on'); back.innerHTML=''; editPin=null; refreshCounts(); }
@@ -98,9 +100,18 @@
     var text=poskladaj();
     back.innerHTML='<div class="pz-sheet"><h3>Poslať '+pins.length+' pripomienok</h3><div class="sub">Otvorí WhatsApp s hotovým textom — vyber komu poslať.</div>'
       + '<pre>'+escapeHtml(text)+'</pre>'
-      + '<div class="pz-row"><button class="pz-btn green" type="button" data-act="wa" data-text="'+escapeAttr(text)+'">📤 Otvoriť WhatsApp</button></div>'
-      + '<div class="pz-row"><button class="pz-btn" type="button" data-act="kopi" data-text="'+escapeAttr(text)+'">📋 Kopírovať</button><button class="pz-btn" type="button" data-act="zavri">Zavrieť</button></div></div>';
+      + '<div class="pz-row"><button class="pz-btn green" type="button" data-act="harok">✅ Zapísať do hárka</button></div>'
+      + '<div class="pz-row"><button class="pz-btn" type="button" data-act="wa" data-text="'+escapeAttr(text)+'">📤 WhatsApp</button><button class="pz-btn" type="button" data-act="kopi" data-text="'+escapeAttr(text)+'">📋 Kopírovať</button></div>'
+      + '<div class="pz-row"><button class="pz-btn" type="button" data-act="zavri">Zavrieť</button></div></div>';
     back.classList.add('on');
+  }
+  function zapisDoHarka(btn){
+    if(!pins.length) return;
+    btn.disabled=true; btn.textContent='Zapisujem…';
+    var payload={ rola:ROLA, pins: pins.map(function(p){ return { obrazovka:scrLabelById(p.scr), pozn:(p.pozn||'(bez textu)'), cislo:p.cislo }; }) };
+    fetch(ENDPOINT, { method:'POST', mode:'no-cors', headers:{'Content-Type':'text/plain;charset=utf-8'}, body:JSON.stringify(payload) })
+      .then(function(){ poslane=true; back.classList.remove('on'); back.innerHTML=''; alert('✅ Zapísané do hárka ('+payload.pins.length+'). Ďakujeme!'); })
+      .catch(function(){ btn.disabled=false; btn.textContent='✅ Zapísať do hárka'; alert('Nepodarilo sa zapísať — skús WhatsApp alebo Kopírovať.'); });
   }
   function kopiruj(t){ if(navigator.clipboard){ navigator.clipboard.writeText(t).then(function(){ poslane=true; alert('Skopírované — vlož do WhatsApp a pošli.'); }, function(){ prompt('Skopíruj text:', t); }); } else { prompt('Skopíruj text:', t); } }
 
